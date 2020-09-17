@@ -88,3 +88,62 @@ exports.extractCSS = ({ include, exclude } = {}) => {
     plugins: [plugin],
   };
 };
+
+exports.loadImages = ({ include, exclude, options } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(gif|png|jpe?g)$/i,
+        include,
+        exclude,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {},
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+              },
+              // optipng.enabled: false will disable optipng
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                quality: [0.65, 0.9],
+                speed: 4,
+              },
+              gifsicle: {
+                interlaced: false,
+              },
+              // // the webp option will enable WEBP
+              // webp: {
+              //   quality: 75,
+              //   enabled: true,
+              // },
+            },
+          },
+        ],
+      },
+
+      {
+        test: /\.svg$/,
+        use: [
+          { loader: 'file-loader' },
+          {
+            loader: 'svgo-loader',
+            options: {
+              plugins: [
+                { removeTitle: true },
+                { convertColors: { shorthex: false } },
+                { convertPathData: false },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+});

@@ -27,6 +27,8 @@ const defaultMeta = {
 const parts = require('./webpack.parts');
 
 const commonConfig = merge([
+  parts.loadImages(),
+
   {
     entry: {
       homePage: './src/assets/js/pages/index.js',
@@ -43,12 +45,42 @@ const commonConfig = merge([
         {
           test: /\.html$/i,
           loader: 'html-loader',
+          options: {
+            attributes: {
+              list: [
+                // All default supported tags and attributes
+                {
+                  tag: 'div',
+                  attribute: 'data-src',
+                  type: 'src',
+                },
+                {
+                  tag: 'a',
+                  attribute: 'href',
+                  type: 'src',
+                  filter: (tag, attribute, attributes, resourcePath) => {
+                    // The `tag` argument contains a name of the HTML tag.
+                    // The `attribute` argument contains a name of the HTML attribute.
+                    // The `attributes` argument contains all attributes of the tag.
+                    // The `resourcePath` argument contains a path to the loaded HTML file.
+
+                    if (attributes.class === 'aa') {
+                      return true;
+                    }
+
+                    return false;
+                  },
+                },
+              ],
+            },
+          },
         },
       ],
     },
     resolve: {
       extensions: ['.ts', '.js'],
     },
+
     plugins: [
       new ErrorOverlayPlugin(),
       new CaseSensitivePathsPlugin(),
