@@ -80,7 +80,12 @@ exports.extractCSS = ({ include, exclude } = {}) => {
                 plugins: () => [require('autoprefixer'), require('precss')],
               },
             },
-            'sass-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+              },
+            },
           ],
         },
       ],
@@ -99,7 +104,9 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
         use: [
           {
             loader: 'file-loader',
-            options: {},
+            options: {
+              outputPath: 'assets/images',
+            },
           },
           {
             loader: 'image-webpack-loader',

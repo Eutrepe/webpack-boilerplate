@@ -43,12 +43,22 @@ const commonConfig = merge([
     module: {
       rules: [
         {
+          test: /\.(ttf|eot|woff|woff2)$/,
+          use: {
+            loader: 'file-loader',
+            options: {
+              name: 'assets/fonts/[name].[ext]',
+            },
+          },
+        },
+        {
           test: /\.html$/i,
           loader: 'html-loader',
           options: {
             attributes: {
               list: [
                 // All default supported tags and attributes
+                '...',
                 {
                   tag: 'div',
                   attribute: 'data-src',

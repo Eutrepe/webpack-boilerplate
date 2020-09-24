@@ -1,8 +1,14 @@
 @import 'reset';
+@import 'fonts';
 @import 'helpers';
 @import 'global';
 
+// components
+
+@import 'components/test';
+
 body {
   // display: none;
-  background-image: url('../images/s.svg');
+  // background-image: url('../images/s.svg');
+  font-family: 'myfontfamily';
 }
