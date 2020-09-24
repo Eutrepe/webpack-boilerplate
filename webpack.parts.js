@@ -1,4 +1,19 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
+
+const APP_SOURCE = path.join(__dirname, 'src');
+
+exports.loadJavaScript = () => ({
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: APP_SOURCE, // Consider extracting as a parameter
+        use: 'babel-loader',
+      },
+    ],
+  },
+});
 
 exports.devServer = ({ host, port } = {}) => ({
   devServer: {
@@ -138,7 +153,12 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
       {
         test: /\.svg$/,
         use: [
-          { loader: 'file-loader' },
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'assets/images',
+            },
+          },
           {
             loader: 'svgo-loader',
             options: {

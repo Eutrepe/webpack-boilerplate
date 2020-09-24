@@ -28,6 +28,7 @@ const parts = require('./webpack.parts');
 
 const commonConfig = merge([
   parts.loadImages(),
+  parts.loadJavaScript(),
 
   {
     entry: {
@@ -38,12 +39,14 @@ const commonConfig = merge([
       path: path.resolve(__dirname, './web'),
       publicPath: '',
       // publicPath: 'http://localhost:9090/',
+      filename: '[name].[contenthash].js',
     },
     devtool: 'cheap-module-source-map',
     module: {
       rules: [
         {
-          test: /\.(ttf|eot|woff|woff2)$/,
+          test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+          include: [path.resolve(__dirname, 'src/assets/fonts/')],
           use: {
             loader: 'file-loader',
             options: {

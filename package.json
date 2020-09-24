@@ -23,7 +23,10 @@
   },
   "homepage": "https://github.com/Eutrepe/webpack-boilerplate#readme",
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
     "autoprefixer": "^9.8.6",
+    "babel-loader": "^8.1.0",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "css-loader": "^4.3.0",
     "dotenv": "^8.2.0",
@@ -51,5 +54,8 @@
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^5.1.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "regenerator-runtime": "^0.13.7"
+  }
 }
