@@ -29,7 +29,6 @@ const parts = require('./webpack.parts');
 const commonConfig = merge([
   parts.loadImages(),
   parts.loadJavaScript(),
-
   {
     entry: {
       homePage: './src/assets/js/pages/index.js',
