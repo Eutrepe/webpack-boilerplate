@@ -31,7 +31,7 @@ const commonConfig = merge([
   parts.loadJavaScript(),
   {
     entry: {
-      homePage: './src/assets/js/pages/index.js',
+      homePage: './src/assets/js/pages/index.ts',
       aboutPage: './src/assets/js/pages/about.js',
     },
     output: {
@@ -43,6 +43,11 @@ const commonConfig = merge([
     devtool: 'cheap-module-source-map',
     module: {
       rules: [
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
+        },
         {
           test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
           include: [path.resolve(__dirname, 'src/assets/fonts/')],
