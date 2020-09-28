@@ -99,6 +99,8 @@ exports.extractCSS = ({ include, exclude } = {}) => {
               loader: 'sass-loader',
               options: {
                 sourceMap: true,
+                // Prefer `dart-sass`
+                implementation: require('sass'),
               },
             },
           ],
