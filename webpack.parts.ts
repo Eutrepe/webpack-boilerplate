@@ -1,4 +1,4 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import MiniCssExtractPlugin = require('mini-css-extract-plugin');
 import * as path from 'path';
 
 const APP_SOURCE = path.join(__dirname, 'src');
