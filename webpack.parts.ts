@@ -1,5 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
+import * as path from 'path';
 
 const APP_SOURCE = path.join(__dirname, 'src');
 
@@ -15,7 +15,7 @@ exports.loadJavaScript = () => ({
   },
 });
 
-exports.devServer = ({ host, port } = {}) => ({
+exports.devServer = ({ host = `localhost`, port = `8080` } = {}) => ({
   devServer: {
     // Display only errors to reduce the amount of output.
     stats: 'errors-only',
@@ -35,13 +35,11 @@ exports.devServer = ({ host, port } = {}) => ({
   },
 });
 
-exports.loadCSS = ({ include, exclude } = {}) => ({
+exports.loadCSS = () => ({
   module: {
     rules: [
       {
         test: /\.(sa|sc|c)ss$/,
-        include,
-        exclude,
         use: [
           {
             loader: 'style-loader',
@@ -72,7 +70,7 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
   },
 });
 
-exports.extractCSS = ({ include, exclude } = {}) => {
+exports.extractCSS = () => {
   // Output extracted CSS to a file
   const plugin = new MiniCssExtractPlugin({
     filename: '[name].[contenthash].css',
@@ -84,8 +82,6 @@ exports.extractCSS = ({ include, exclude } = {}) => {
       rules: [
         {
           test: /\.(sa|sc|c)ss$/,
-          include,
-          exclude,
           use: [
             MiniCssExtractPlugin.loader,
             'css-loader',
@@ -111,13 +107,11 @@ exports.extractCSS = ({ include, exclude } = {}) => {
   };
 };
 
-exports.loadImages = ({ include, exclude, options } = {}) => ({
+exports.loadImages = () => ({
   module: {
     rules: [
       {
         test: /\.(gif|png|jpe?g)$/i,
-        include,
-        exclude,
         use: [
           {
             loader: 'file-loader',

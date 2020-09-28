@@ -1,14 +1,12 @@
 require('dotenv').config();
-const path = require('path');
-const webpack = require('webpack');
-const { merge } = require('webpack-merge');
+import * as path from 'path';
+import { merge } from 'webpack-merge';
 
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+import CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+import HtmlWebPackPlugin = require('html-webpack-plugin');
+import ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+import FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+import HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 
 const defaultMeta = {
@@ -75,7 +73,12 @@ const commonConfig = merge([
                   tag: 'a',
                   attribute: 'href',
                   type: 'src',
-                  filter: (tag, attribute, attributes, resourcePath) => {
+                  filter: (
+                    tag: any,
+                    attribute: any,
+                    attributes: any,
+                    resourcePath: any
+                  ) => {
                     // The `tag` argument contains a name of the HTML tag.
                     // The `attribute` argument contains a name of the HTML attribute.
                     // The `attributes` argument contains all attributes of the tag.
@@ -141,7 +144,7 @@ const developmentConfig = merge([
   parts.loadCSS(),
 ]);
 
-module.exports = mode => {
+module.exports = (mode: 'production' | 'development' | 'none') => {
   if (mode === 'production') {
     return merge(commonConfig, productionConfig, { mode });
   }
