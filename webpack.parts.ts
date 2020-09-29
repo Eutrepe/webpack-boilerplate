@@ -15,6 +15,10 @@ exports.loadJavaScript = () => ({
   },
 });
 
+exports.generateSourceMaps = ({ type = 'source-map' }) => ({
+  devtool: type,
+});
+
 exports.devServer = ({ host = `localhost`, port = `8080` } = {}) => ({
   devServer: {
     // Display only errors to reduce the amount of output.

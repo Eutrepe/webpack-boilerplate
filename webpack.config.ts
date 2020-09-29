@@ -38,7 +38,6 @@ const commonConfig = merge([
       // publicPath: 'http://localhost:9090/',
       filename: '[name].[contenthash].js',
     },
-    devtool: 'cheap-module-source-map',
     module: {
       rules: [
         {
@@ -132,7 +131,10 @@ const commonConfig = merge([
   },
 ]);
 
-const productionConfig = merge([parts.extractCSS()]);
+const productionConfig = merge([
+  parts.extractCSS(),
+  parts.generateSourceMaps({ type: 'nosources-source-map' }),
+]);
 
 const developmentConfig = merge([
   parts.devServer({
@@ -140,6 +142,7 @@ const developmentConfig = merge([
     host: process.env.HOST,
     port: process.env.PORT,
   }),
+  parts.generateSourceMaps({ type: 'eval-source-map' }),
 
   parts.loadCSS(),
 ]);
