@@ -1,7 +1,5 @@
 import '../../scss/style.scss';
 
-import * as $ from 'jquery';
-
 $(() => {
   console.log('ready');
 });

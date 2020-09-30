@@ -134,6 +134,19 @@ const commonConfig = merge([
 const productionConfig = merge([
   parts.extractCSS(),
   parts.generateSourceMaps({ type: 'nosources-source-map' }),
+  {
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendor',
+            chunks: 'initial',
+          },
+        },
+      },
+    },
+  },
 ]);
 
 const developmentConfig = merge([
@@ -145,13 +158,6 @@ const developmentConfig = merge([
   parts.generateSourceMaps({ type: 'eval-source-map' }),
 
   parts.loadCSS(),
-  {
-    optimization: {
-      splitChunks: {
-        chunks: 'all',
-      },
-    },
-  },
 ]);
 
 module.exports = (mode: 'production' | 'development' | 'none') => {

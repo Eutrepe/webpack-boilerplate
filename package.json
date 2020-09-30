@@ -64,7 +64,6 @@
   "dependencies": {
     "@types/jquery": "^3.5.1",
     "core-js": "^3.6.5",
-    "jquery": "^3.5.1",
     "regenerator-runtime": "^0.13.7"
   }
 }
