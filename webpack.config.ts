@@ -25,6 +25,7 @@ const defaultMeta = {
 const parts = require('./webpack.parts');
 
 const commonConfig = merge([
+  parts.clean(),
   parts.loadImages(),
   parts.loadJavaScript(),
   {
@@ -134,6 +135,7 @@ const commonConfig = merge([
 const productionConfig = merge([
   parts.extractCSS(),
   parts.generateSourceMaps({ type: 'nosources-source-map' }),
+  parts.attachRevision(),
   {
     optimization: {
       splitChunks: {

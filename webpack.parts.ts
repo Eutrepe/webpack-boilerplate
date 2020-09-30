@@ -1,7 +1,19 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const webpack = require('webpack');
+const GitRevisionPlugin = require('git-revision-webpack-plugin');
+
 const path2 = require('path');
 
 const APP_SOURCE = path2.join(__dirname, 'src');
+
+exports.attachRevision = () => ({
+  plugins: [
+    new webpack.BannerPlugin({
+      banner: new GitRevisionPlugin().version(),
+    }),
+  ],
+});
 
 exports.loadJavaScript = () => ({
   module: {
@@ -13,6 +25,10 @@ exports.loadJavaScript = () => ({
       },
     ],
   },
+});
+
+exports.clean = () => ({
+  plugins: [new CleanWebpackPlugin()],
 });
 
 exports.generateSourceMaps = ({ type = 'source-map' }) => ({
