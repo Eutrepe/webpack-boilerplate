@@ -1,7 +1,7 @@
-import MiniCssExtractPlugin = require('mini-css-extract-plugin');
-import * as path from 'path';
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path2 = require('path');
 
-const APP_SOURCE = path.join(__dirname, 'src');
+const APP_SOURCE = path2.join(__dirname, 'src');
 
 exports.loadJavaScript = () => ({
   module: {
@@ -62,6 +62,7 @@ exports.loadCSS = () => ({
               plugins: () => [require('autoprefixer')(), require('precss')],
             },
           },
+          'resolve-url-loader',
           {
             loader: 'sass-loader',
             options: {
@@ -95,6 +96,7 @@ exports.extractCSS = () => {
                 plugins: () => [require('autoprefixer'), require('precss')],
               },
             },
+            'resolve-url-loader',
             {
               loader: 'sass-loader',
               options: {

@@ -1,12 +1,12 @@
 require('dotenv').config();
-import * as path from 'path';
-import { merge } from 'webpack-merge';
+const path = require('path');
+const { merge } = require('webpack-merge');
 
-import CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-import HtmlWebPackPlugin = require('html-webpack-plugin');
-import ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-import FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-import HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 
 const defaultMeta = {
@@ -145,6 +145,13 @@ const developmentConfig = merge([
   parts.generateSourceMaps({ type: 'eval-source-map' }),
 
   parts.loadCSS(),
+  {
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
+    },
+  },
 ]);
 
 module.exports = (mode: 'production' | 'development' | 'none') => {

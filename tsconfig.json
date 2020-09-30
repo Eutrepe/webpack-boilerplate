@@ -3,9 +3,12 @@
     "outDir": "./web/",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "commonjs",
+    "module": "esnext",
+    "strict": true,
+    "importHelpers": true,
     "target": "es5",
     "jsx": "react",
-    "allowJs": true
+    "allowJs": true,
+    "moduleResolution": "node"
   }
 }
