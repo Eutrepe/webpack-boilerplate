@@ -1,9 +1,5 @@
 import '../../scss/style.scss';
 
-$(() => {
-  console.log('ready');
-});
-
 const el = {
   aaa: 11,
 };
