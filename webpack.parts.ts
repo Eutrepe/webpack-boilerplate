@@ -5,6 +5,9 @@ const GitRevisionPlugin = require('git-revision-webpack-plugin');
 
 const path2 = require('path');
 
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const cssnano = require('cssnano');
+
 const APP_SOURCE = path2.join(__dirname, 'src');
 
 exports.attachRevision = () => ({
@@ -25,6 +28,18 @@ exports.loadJavaScript = () => ({
       },
     ],
   },
+});
+
+exports.minifyCSS = (options: {}) => ({
+  plugins: [
+    new OptimizeCSSAssetsPlugin({
+      cssProcessor: cssnano,
+      cssProcessorOptions: {
+        preset: ['default'],
+      },
+      canPrint: false,
+    }),
+  ],
 });
 
 exports.clean = () => ({

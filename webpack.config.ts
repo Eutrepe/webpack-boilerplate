@@ -149,6 +149,7 @@ const productionConfig = merge([
       },
     },
   },
+  parts.minifyCSS(),
 ]);
 
 const developmentConfig = merge([
