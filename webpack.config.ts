@@ -8,6 +8,8 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 
 const defaultMeta = {
   viewport:
@@ -153,6 +155,15 @@ const productionConfig = merge([
     },
   },
   parts.minifyCSS(),
+  {
+    plugins: [
+      new BundleAnalyzerPlugin({
+        openAnalyzer: false,
+        analyzerHost: process.env.HOST,
+        analyzerPort: 8888,
+      }),
+    ],
+  },
 ]);
 
 const developmentConfig = merge([
