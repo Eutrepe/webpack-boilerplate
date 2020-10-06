@@ -147,6 +147,9 @@ const productionConfig = merge([
           },
         },
       },
+      runtimeChunk: {
+        name: 'runtime',
+      },
     },
   },
   parts.minifyCSS(),
