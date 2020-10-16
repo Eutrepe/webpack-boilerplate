@@ -21,7 +21,6 @@ async function asyncCall() {
   console.log('callingTS');
   const result = await resolveAfter2Seconds();
   console.log(result);
-  // expected output: "resolved"
 }
 
 asyncCall();
