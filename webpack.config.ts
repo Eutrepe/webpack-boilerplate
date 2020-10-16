@@ -35,12 +35,7 @@ const commonConfig = merge([
       homePage: './src/assets/js/pages/index.ts',
       aboutPage: './src/assets/js/pages/about.js',
     },
-    output: {
-      path: path.resolve(__dirname, './web'),
-      publicPath: '',
-      // publicPath: 'http://localhost:9090/',
-      filename: '[name].[contenthash].js',
-    },
+    
     module: {
       rules: [
         {
@@ -139,6 +134,11 @@ const productionConfig = merge([
   parts.generateSourceMaps({ type: 'nosources-source-map' }),
   parts.attachRevision(),
   {
+    output: {
+      path: path.resolve(__dirname, './web'),
+      publicPath: '',
+      filename: '[name].[contenthash].js',
+    },
     optimization: {
       splitChunks: {
         cacheGroups: {
@@ -172,6 +172,14 @@ const developmentConfig = merge([
     host: process.env.HOST,
     port: process.env.PORT,
   }),
+  {
+    output: {
+      path: path.resolve(__dirname, './web'),
+      publicPath: '',
+      // publicPath: 'http://localhost:9090/',
+      filename: '[name].[hash].js',
+    },
+  },
   parts.generateSourceMaps({ type: 'eval-source-map' }),
 
   parts.loadCSS(),

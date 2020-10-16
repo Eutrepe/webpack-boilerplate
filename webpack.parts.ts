@@ -54,7 +54,7 @@ exports.devServer = ({ host = `localhost`, port = `8080` } = {}) => ({
   devServer: {
     // Display only errors to reduce the amount of output.
     stats: 'errors-only',
-
+    hotOnly: true,
     // Parse host and port from env to allow customization.
     //
     // If you use Docker, Vagrant or Cloud9, set
