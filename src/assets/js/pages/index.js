@@ -1,14 +1,5 @@
 import '../../scss/style.scss';
 
-const el = {
-  aaa: 11,
-};
-
-const b = {
-  ...el,
-  www: 888,
-};
-
 function resolveAfter2Seconds() {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -42,4 +33,6 @@ const testDynamic = (text = 'Hello world') => {
   return element;
 };
 
-document.querySelector('body').append(testDynamic());
+const body = document.querySelector('body');
+
+if (body) body.append(testDynamic());

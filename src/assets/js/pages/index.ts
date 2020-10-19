@@ -1,14 +1,5 @@
 import '../../scss/style.scss';
 
-const el = {
-  aaa: 11,
-};
-
-const b = {
-  ...el,
-  www: 888,
-};
-
 function resolveAfter2Seconds() {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -21,7 +12,6 @@ async function asyncCall() {
   console.log('callingTS');
   const result = await resolveAfter2Seconds();
   console.log(result);
-  // expected output: "resolved"
 }
 
 asyncCall();
@@ -43,4 +33,6 @@ const testDynamic = (text = 'Hello world'): HTMLElement => {
   return element;
 };
 
-document.querySelector('body')!.append(testDynamic());
+const body = document.querySelector('body');
+
+if (body) body.append(testDynamic());

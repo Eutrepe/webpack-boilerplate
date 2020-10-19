@@ -7,7 +7,8 @@
     "start": "nodemon --watch webpack.config.js --exec \"webpack-dev-server --env development\"",
     "build": "webpack --env production",
     "build:stats": "webpack --mode production --profile --progress --json > stats.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,8 @@
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.4",
     "@types/mini-css-extract-plugin": "^0.9.1",
     "@types/script-ext-html-webpack-plugin": "^2.1.1",
+    "@typescript-eslint/eslint-plugin": "^4.5.0",
+    "@typescript-eslint/parser": "^4.5.0",
     "autoprefixer": "^9.8.6",
     "babel-loader": "^8.1.0",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
@@ -37,6 +40,9 @@
     "cssnano": "^4.1.10",
     "dotenv": "^8.2.0",
     "error-overlay-webpack-plugin": "^0.4.1",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^6.13.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "extract-loader": "^5.1.0",
     "favicons-webpack-plugin": "^3.0.1",
     "file-loader": "^6.1.1",
@@ -50,6 +56,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.4",
     "postcss-loader": "^3.0.0",
     "precss": "^4.0.0",
+    "prettier": "^2.1.2",
     "resolve-url-loader": "^3.1.1",
     "sass": "^1.27.0",
     "sass-loader": "^9.0.3",
