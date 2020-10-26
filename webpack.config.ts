@@ -1,5 +1,4 @@
 require('dotenv').config();
-const path = require('path');
 const { merge } = require('webpack-merge');
 
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -27,76 +26,17 @@ const defaultMeta = {
 const parts = require('./webpack.parts');
 
 const commonConfig = merge([
-  parts.clean(),
+  parts.loadHTML(),
+  parts.loadPug(),
   parts.loadImages(),
   parts.loadJavaScript(),
+  parts.loadTypescript(),
+  parts.loadFonts(),
+  parts.clean(),
   {
     entry: {
       homePage: './src/assets/js/pages/index.ts',
       aboutPage: './src/assets/js/pages/about.js',
-    },
-    
-    module: {
-      rules: [
-        { 
-          test: /\.pug$/,
-          use: ['pug-loader']
-        },
-        {
-          test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/,
-        },
-        {
-          test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-          include: [path.resolve(__dirname, 'src/assets/fonts/')],
-          use: {
-            loader: 'file-loader',
-            options: {
-              name: 'assets/fonts/[name].[ext]',
-            },
-          },
-        },
-        {
-          test: /\.html$/i,
-          loader: 'html-loader',
-          options: {
-            attributes: {
-              list: [
-                // All default supported tags and attributes
-                '...',
-                {
-                  tag: 'div',
-                  attribute: 'data-src',
-                  type: 'src',
-                },
-                {
-                  tag: 'a',
-                  attribute: 'href',
-                  type: 'src',
-                  filter: (
-                    tag: any,
-                    attribute: any,
-                    attributes: any,
-                    resourcePath: any
-                  ) => {
-                    // The `tag` argument contains a name of the HTML tag.
-                    // The `attribute` argument contains a name of the HTML attribute.
-                    // The `attributes` argument contains all attributes of the tag.
-                    // The `resourcePath` argument contains a path to the loaded HTML file.
-
-                    if (attributes.class === 'aa') {
-                      return true;
-                    }
-
-                    return false;
-                  },
-                },
-              ],
-            },
-          },
-        },
-      ],
     },
     resolve: {
       extensions: ['.ts', '.js'],
@@ -105,6 +45,8 @@ const commonConfig = merge([
     plugins: [
       new ErrorOverlayPlugin(),
       new CaseSensitivePathsPlugin(),
+
+      // Pages START
       new HtmlWebPackPlugin({
         filename: 'index.html',
         chunks: ['homePage'],
@@ -121,6 +63,8 @@ const commonConfig = merge([
         meta: defaultMeta,
         alwaysWriteToDisk: true,
       }),
+      // Pages END
+
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'defer',
       }),
@@ -134,31 +78,12 @@ const commonConfig = merge([
 ]);
 
 const productionConfig = merge([
+  parts.loadOptimization(),
   parts.extractCSS(),
+  parts.minifyCSS(),
   parts.generateSourceMaps({ type: 'nosources-source-map' }),
   parts.attachRevision(),
-  {
-    output: {
-      path: path.resolve(__dirname, './web'),
-      publicPath: '',
-      filename: '[name].[contenthash].js',
-    },
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendor',
-            chunks: 'initial',
-          },
-        },
-      },
-      runtimeChunk: {
-        name: 'runtime',
-      },
-    },
-  },
-  parts.minifyCSS(),
+  parts.loadOutput(),
   {
     plugins: [
       new BundleAnalyzerPlugin({
@@ -171,23 +96,16 @@ const productionConfig = merge([
 ]);
 
 const developmentConfig = merge([
+  parts.loadOutput('[name].[hash].js'),
   parts.devServer({
     // Customize host/port here if needed
     host: process.env.HOST,
     port: process.env.PORT,
   }),
-  {
-    output: {
-      path: path.resolve(__dirname, './web'),
-      publicPath: '',
-      // publicPath: 'http://localhost:9090/',
-      filename: '[name].[hash].js',
-    },
-  },
   parts.generateSourceMaps({ type: 'eval-source-map' }),
-
   parts.loadCSS(),
 ]);
+
 
 module.exports = (mode: 'production' | 'development' | 'none') => {
   if (mode === 'production') {
