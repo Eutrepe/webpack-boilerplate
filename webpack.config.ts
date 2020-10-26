@@ -25,6 +25,8 @@ const defaultMeta = {
 
 const parts = require('./webpack.parts');
 
+const path2 = require('path');
+
 const commonConfig = merge([
   parts.loadHTML(),
   parts.loadPug(),
@@ -35,8 +37,8 @@ const commonConfig = merge([
   parts.clean(),
   {
     entry: {
-      homePage: './src/assets/js/pages/index.ts',
-      aboutPage: './src/assets/js/pages/about.js',
+      homePage: `${path2.resolve(__dirname)}/src/assets/js/pages/index.ts`,
+      aboutPage: `${path2.resolve(__dirname)}/src/assets/js/pages/about.js`,
     },
     // TODO uncomment in webpack 5
     // target: ['web', 'es5'],
