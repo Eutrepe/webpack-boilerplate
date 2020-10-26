@@ -38,6 +38,8 @@ const commonConfig = merge([
       homePage: './src/assets/js/pages/index.ts',
       aboutPage: './src/assets/js/pages/about.js',
     },
+    // TODO uncomment in webpack 5
+    // target: ['web', 'es5'],
     resolve: {
       extensions: ['.ts', '.js'],
     },

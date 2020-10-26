@@ -122,7 +122,9 @@ exports.loadCSS = () => ({
             loader: 'postcss-loader',
             options: {
               sourceMap: true,
-              plugins: () => [require('autoprefixer')(), require('precss')],
+              postcssOptions: {
+                plugins: () => [require('autoprefixer'), require('precss')],
+              }
             },
           },
           'resolve-url-loader',
@@ -156,7 +158,10 @@ exports.extractCSS = () => {
             {
               loader: 'postcss-loader',
               options: {
-                plugins: () => [require('autoprefixer'), require('precss')],
+
+                postcssOptions: {
+                  plugins: () => [require('autoprefixer'), require('precss')],
+                }
               },
             },
             'resolve-url-loader',
