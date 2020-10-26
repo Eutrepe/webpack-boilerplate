@@ -38,6 +38,10 @@ const commonConfig = merge([
     
     module: {
       rules: [
+        { 
+          test: /\.pug$/,
+          use: ['pug-loader']
+        },
         {
           test: /\.tsx?$/,
           use: 'ts-loader',
@@ -104,7 +108,7 @@ const commonConfig = merge([
       new HtmlWebPackPlugin({
         filename: 'index.html',
         chunks: ['homePage'],
-        template: './src/pages/index.html',
+        template: './src/pages/index.pug',
         inject: 'head',
         meta: defaultMeta,
         alwaysWriteToDisk: true,

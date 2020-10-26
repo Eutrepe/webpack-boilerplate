@@ -1,0 +1,14 @@
+- var pageTitle = 'test title'
+
+
+doctype html
+html(lang="en")
+  head
+    title= pageTitle
+    script(type='text/javascript').
+      console.log('test')
+  body
+    include includes/test.pug
+    h1 Pug - node template engine
+    include includes/test.pug
+
