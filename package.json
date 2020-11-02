@@ -51,6 +51,7 @@
     "html-webpack-harddisk-plugin": "^1.0.2",
     "html-webpack-plugin": "^4.5.0",
     "image-webpack-loader": "^7.0.1",
+    "imagemin-gifsicle": "^7.0.0",
     "mini-css-extract-plugin": "^1.2.1",
     "nodemon": "^2.0.6",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
