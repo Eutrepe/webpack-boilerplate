@@ -91,9 +91,7 @@ const productionConfig = merge([
   {
     plugins: [
       new BundleAnalyzerPlugin({
-        openAnalyzer: true,
-        analyzerHost: process.env.HOST,
-        analyzerPort: 8888,
+        analyzerMode: 'disabled'
       }),
     ],
   },
