@@ -88,6 +88,7 @@ const productionConfig = merge([
   parts.generateSourceMaps({ type: 'nosources-source-map' }),
   parts.attachRevision(),
   parts.loadOutput(),
+  parts.addLicenseFiles(),
   {
     plugins: [
       new BundleAnalyzerPlugin({
