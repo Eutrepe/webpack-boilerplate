@@ -6,7 +6,6 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 // const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-// const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 
@@ -47,7 +46,6 @@ const commonConfig = merge([
     },
 
     plugins: [
-      // new ErrorOverlayPlugin(),
       new CaseSensitivePathsPlugin(),
 
       // Pages START
@@ -88,7 +86,6 @@ const productionConfig = merge([
   parts.generateSourceMaps({ type: 'nosources-source-map' }),
   parts.attachRevision(),
   parts.loadOutput(),
-  parts.addLicenseFiles(),
   {
     plugins: [
       new BundleAnalyzerPlugin({
@@ -111,11 +108,11 @@ const developmentConfig = merge([
 
 
 module.exports = (mode: any) => {
-
-  console.log(mode)
-  if (mode.prod) {
-    return merge(commonConfig, productionConfig, { mode });
+  if (mode) {
+    if (mode.prod) {
+      return merge(commonConfig, productionConfig, { mode });
+    } else {
+      return merge(commonConfig, developmentConfig, { mode });
+    }
   }
-
-  return merge(commonConfig, developmentConfig, { mode });
 };

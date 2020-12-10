@@ -1,5 +1,13 @@
 import '../../scss/style.scss';
 
+const buttons = document.querySelectorAll('button');
+
+buttons.forEach((button: HTMLElement) => {
+  button.addEventListener('click', (event: Event) => {
+    console.log(event.target);
+  });
+});
+
 function resolveAfter2Seconds() {
   return new Promise(resolve => {
     setTimeout(() => {

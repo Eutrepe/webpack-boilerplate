@@ -2,7 +2,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
-const LicenseWebpackPlugin = require('license-webpack-plugin').LicenseWebpackPlugin;
 
 const path = require('path');
 
@@ -38,12 +37,6 @@ exports.loadOutput = (filename: string = '[name].[contenthash].js') => ({
   },
 });
 
-
-exports.addLicenseFiles = () => ({
-  plugins: [
-    new LicenseWebpackPlugin()
-  ]
-})
 
 
 exports.loadHTML = () => (
@@ -214,7 +207,7 @@ exports.loadTypescript = () => (
       rules: [
         {
           test: /\.tsx?$/,
-          use: 'ts-loader',
+          use: 'babel-loader',
           include: APP_SOURCE, 
           exclude: /node_modules/,
         },
