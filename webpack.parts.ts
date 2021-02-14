@@ -47,7 +47,8 @@ exports.loadHTML = () => (
           test: /\.html$/i,
           loader: 'html-loader',
           options: {
-            attributes: {
+            esModule: false,
+            sources: {
               list: [
                 // All default supported tags and attributes
                 '...',
@@ -66,17 +67,22 @@ exports.loadHTML = () => (
                     attributes: any,
                     resourcePath: any
                   ) => {
+                    let result = false;
                     // The `tag` argument contains a name of the HTML tag.
                     // The `attribute` argument contains a name of the HTML attribute.
                     // The `attributes` argument contains all attributes of the tag.
                     // The `resourcePath` argument contains a path to the loaded HTML file.
 
                     // add hash to <a> tag only if has class 'hash-this'
-                    if (attributes.class === 'hash-this') {
-                      return true;
-                    }
 
-                    return false;
+                    for (const attribute of attributes) {
+                      console.log('QQQ', attribute);
+                      if (attribute.name === 'class' && attribute.value.indexOf('hash-this') > -1) {
+                        result = true;
+                      }
+                    }
+                    
+                    return result;
                   },
                 },
               ],
@@ -304,10 +310,6 @@ exports.loadFonts = () => (
 
 exports.devServer = ({ host = `localhost`, port = `8080` } = {}) => ({
   devServer: {
-    // Display only errors to reduce the amount of output.
-    stats: 'errors-only',
-    hotOnly: true,
-    // Parse host and port from env to allow customization.
     //
     // If you use Docker, Vagrant or Cloud9, set
     // host: "0.0.0.0";
