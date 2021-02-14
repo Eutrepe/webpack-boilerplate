@@ -76,7 +76,6 @@ exports.loadHTML = () => (
                     // add hash to <a> tag only if has class 'hash-this'
 
                     for (const attribute of attributes) {
-                      console.log('QQQ', attribute);
                       if (attribute.name === 'class' && attribute.value.indexOf('hash-this') > -1) {
                         result = true;
                       }
