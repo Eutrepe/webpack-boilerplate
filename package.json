@@ -68,7 +68,7 @@
     "postcss-loader": "^5.0.0",
     "precss": "^4.0.0",
     "prettier": "^2.2.1",
-    "pug": "^3.0.0",
+    "pug": "^3.0.2",
     "pug-loader": "^2.4.0",
     "resolve-url-loader": "^3.1.2",
     "sass": "^1.32.8",
@@ -87,7 +87,7 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "core-js": "^3.9.0",
+    "core-js": "^3.9.1",
     "regenerator-runtime": "^0.13.7"
   }
 }
