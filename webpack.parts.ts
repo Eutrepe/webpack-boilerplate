@@ -2,6 +2,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const { extendDefaultPlugins } = require('svgo');
 
 const path = require('path');
 
@@ -273,11 +274,24 @@ exports.loadImages = () => ({
           {
             loader: 'svgo-loader',
             options: {
-              plugins: [
-                { removeTitle: true },
-                { convertColors: { shorthex: false } },
-                { convertPathData: false },
-              ],
+              options: {
+                plugins: extendDefaultPlugins([
+                  {
+                    name: 'removeTitle',
+                    active: true
+                  },
+                  {
+                    name: 'convertPathData',
+                    active: false
+                  },
+                  {
+                    name: 'convertColors',
+                    params: {
+                      shorthex: false
+                    }
+                  }
+                ])
+              },
             },
           },
         ],
