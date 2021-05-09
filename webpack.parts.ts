@@ -1,19 +1,23 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
-const GitRevisionPlugin = require('git-revision-webpack-plugin');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
 const { extendDefaultPlugins } = require('svgo');
 
 const path = require('path');
 
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const cssnano = require('cssnano');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 const APP_SOURCE = path.join(__dirname, 'src');
 
 
 exports.loadOptimization = () => ({
   optimization: {
+    minimize: true,
+    minimizer: [
+      `...`,
+      new CssMinimizerPlugin(),
+    ],
     splitChunks: {
       cacheGroups: {
         commons: {
@@ -180,19 +184,6 @@ exports.extractCSS = () => {
     plugins: [plugin],
   };
 };
-
-exports.minifyCSS = () => ({
-  plugins: [
-    new OptimizeCSSAssetsPlugin({
-      cssProcessor: cssnano,
-      cssProcessorOptions: {
-        preset: ['default'],
-      },
-      canPrint: false,
-    }),
-  ],
-});
-
 
 exports.loadJavaScript = () => ({
   module: {

@@ -83,7 +83,6 @@ const commonConfig = merge([
 const productionConfig = merge([
   parts.loadOptimization(),
   parts.extractCSS(),
-  parts.minifyCSS(),
   parts.generateSourceMaps({ type: 'nosources-source-map' }),
   parts.attachRevision(),
   parts.loadOutput(),
