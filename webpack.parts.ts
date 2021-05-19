@@ -5,6 +5,7 @@ const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
 const { extendDefaultPlugins } = require('svgo');
 
 const path = require('path');
+exports.path = path;
 
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 

@@ -24,7 +24,6 @@ const defaultMeta = {
 
 const parts = require('./webpack.parts');
 
-const path2 = require('path');
 
 const commonConfig = merge([
   parts.loadHTML(),
@@ -36,8 +35,8 @@ const commonConfig = merge([
   parts.clean(),
   {
     entry: {
-      homePage: `${path2.resolve(__dirname)}/src/assets/js/pages/index.ts`,
-      aboutPage: `${path2.resolve(__dirname)}/src/assets/js/pages/about.js`,
+      homePage: `${parts.path.resolve(__dirname)}/src/assets/js/pages/index.ts`,
+      aboutPage: `${parts.path.resolve(__dirname)}/src/assets/js/pages/about.js`,
     },
 
     target: ['web', 'es5'],
