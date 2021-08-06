@@ -40,6 +40,7 @@ exports.loadOutput = (filename: string = '[name].[contenthash].js') => ({
     path: path.resolve(__dirname, './web'),
     publicPath: '',
     filename: filename,
+    assetModuleFilename: 'assets/images/[hash][ext][query]',
   },
 });
 
@@ -220,13 +221,8 @@ exports.loadImages = () => ({
     rules: [
       {
         test: /\.(gif|png|jpe?g)$/i,
+        type: 'asset/resource',
         use: [
-          {
-            loader: 'file-loader',
-            options: {
-              outputPath: 'assets/images',
-            },
-          },
           {
             loader: 'image-webpack-loader',
             options: {
@@ -256,13 +252,8 @@ exports.loadImages = () => ({
 
       {
         test: /\.svg$/,
+        type: 'asset/resource',
         use: [
-          {
-            loader: 'file-loader',
-            options: {
-              outputPath: 'assets/images',
-            },
-          },
           {
             loader: 'svgo-loader',
             options: {
@@ -300,11 +291,9 @@ exports.loadFonts = () => (
         {
           test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
           include: [path.resolve(__dirname, 'src/assets/fonts/')],
-          use: {
-            loader: 'file-loader',
-            options: {
-              name: 'assets/fonts/[name].[ext]',
-            },
+          type: 'asset/resource',
+          generator: {
+            filename: 'assets/fonts/[name].[ext]'
           },
         },
       ]
