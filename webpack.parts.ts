@@ -240,11 +240,11 @@ exports.loadImages = () => ({
               gifsicle: {
                 interlaced: false,
               },
-              // // the webp option will enable WEBP
-              // webp: {
-              //   quality: 75,
-              //   enabled: true,
-              // },
+              // the webp option will enable WEBP
+              webp: {
+                quality: 75,
+                enabled: true,
+              },
             },
           },
         ],
