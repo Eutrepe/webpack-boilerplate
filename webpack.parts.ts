@@ -2,14 +2,16 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+
 
 const path = require('path');
 exports.path = path;
 
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const chalk = require('chalk');
+exports.chalk = chalk;
 
 const APP_SOURCE = path.join(__dirname, 'src');
-
 
 exports.loadOptimization = () => ({
   optimization: {
@@ -369,3 +371,54 @@ exports.clean = () => ({
 exports.generateSourceMaps = ({ type = 'source-map' }) => ({
   devtool: type,
 });
+
+
+class EnvCheckerPlugin {
+
+  private params: object;
+
+  static findParam = (param: string): string | null =>{
+    let result = null;
+    process.argv.forEach((argv)=>{
+        if(argv.indexOf(param) === -1) return;
+        result = argv.split('=')[1];
+    });
+    return  result;
+  }
+
+  constructor (params: object = {}) {
+    this.params = params;
+  }
+
+  apply(compiler: any) {
+    compiler.hooks.afterEnvironment.tap('EnvCheckerPlugin', () => {
+      console.log(chalk.green("\nChecking for necessary run parameters..."));
+      let missingEnvVars: string[] = [];
+      for (const [env, value] of Object.entries(this.params)) {
+        const paramVal = EnvCheckerPlugin.findParam(env); 
+        if(!paramVal)
+          missingEnvVars.push(env);
+        else if(value instanceof RegExp) {
+          if(!value.test(paramVal)) {
+            throw chalk.bold(
+              `${chalk.red(`\n\nThe given`)} ${chalk.yellow(env)} ${chalk.red('value (')}` +
+              `${chalk.yellow(paramVal)}${chalk.red(`) is not supported.\n\n`)}` +
+              chalk.bold.red(`Please set a value that matches the expression `) +
+              chalk.cyan(value.source) +
+              chalk.bold.red(` and try re-running the build.\n`)
+            );
+          }
+        }
+      }
+      if (missingEnvVars.length) {
+        throw chalk.bold.red("\n\nPlease set the following parameters:\n\n") +
+          chalk.yellow(`  • ${missingEnvVars.join('\n\n  • ')}\n\n`) +
+          chalk.bold.red(`Then, try re-running the build.\n`);
+      }
+    });
+  }
+};
+
+
+exports.EnvCheckerPlugin = EnvCheckerPlugin;
+exports.webpack = webpack;

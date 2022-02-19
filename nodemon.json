@@ -1,0 +1,8 @@
+{
+    "watch": [
+        "webpack.config.ts",
+        "webpack.parts.ts",
+        "i18n/**/*"
+    ],
+    "ext": "json, po"
+}

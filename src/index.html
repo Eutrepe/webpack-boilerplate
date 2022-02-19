@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Sizes:</title>
+    <style>
+        .flex-list {
+            position: relative;
+            margin: 1em;
+            overflow: hidden;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .flex-list ul {
+            list-style: none;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-left: -1px;
+            font-family: Arial, sans-serif;
+            text-transform: uppercase;
+        }
+        .flex-list li {
+            flex-grow: 1;
+            flex-basis: auto;
+            margin: .25em 0;
+            padding: 0 1em;
+            text-align: center;
+            border-left: 1px solid #ccc;
+            background-color: #fff;
+        }
+        .flex-list li:first-child {
+            border-left: none;
+        }
+        .flex-list li a, .flex-list li a:visited {
+            text-decoration: none;
+            color: #ff003b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex-list">
+        <ul>
+            <li><a href="pl/index.html">PL</a></li>
+            <li><a href="en/index.html">EN</a></li>
+        </ul>
+    </div>
+</body>
+
+</html>
