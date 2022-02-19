@@ -2,7 +2,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const { GitRevisionPlugin } = require('git-revision-webpack-plugin')
-const { extendDefaultPlugins } = require('svgo');
 
 const path = require('path');
 exports.path = path;
@@ -35,9 +34,9 @@ exports.loadOptimization = () => ({
 });
 
 
-exports.loadOutput = (filename: string = '[name].[contenthash].js') => ({
+exports.loadOutput = (filename: string = '[name].[contenthash].js', outputDir: string = './public') => ({
   output: {
-    path: path.resolve(__dirname, './web'),
+    path: path.resolve(__dirname, outputDir),
     publicPath: '',
     filename: filename,
     assetModuleFilename: 'assets/images/[hash][ext][query]',
@@ -107,7 +106,7 @@ exports.loadPug = () => (
       rules: [
         { 
           test: /\.pug$/,
-          use: ['pug-loader']
+          use: ['simple-pug-loader']
         },
       ]
     }
@@ -258,25 +257,61 @@ exports.loadImages = () => ({
             loader: 'svgo-loader',
             options: {
               options: {
-                plugins: extendDefaultPlugins([
-                  {
-                    name: 'removeTitle',
-                    active: true
-                  },
-                  {
-                    name: 'convertPathData',
-                    active: false
-                  },
-                  {
-                    name: 'convertColors',
-                    params: {
-                      shorthex: false
+                plugins: {
+                  name: 'preset-default',
+                  params: {
+                    overrides: {
+                      removeTitle: {
+                        active: true
+                      },
+                      convertPathData: {
+                        active: false
+                      },
+                      convertColors: {
+                        active: false
+                      },
                     }
                   }
-                ])
+                }
               },
             },
           },
+        ],
+      },
+    ],
+  },
+});
+
+
+exports.loadVideos = () => ({
+  module: {
+    rules: [
+      {
+        test: /\.(mp4)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'videos/[hashcontent][ext][query]'
+        },
+        use: [
+         
+        ],
+      },
+    ],
+  },
+});
+
+exports.loadAudios = () => ({
+  module: {
+    rules: [
+
+      {
+        test: /\.(mp3)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'audios/[hashcontent][ext][query]'
+        },
+        use: [
+          
         ],
       },
     ],

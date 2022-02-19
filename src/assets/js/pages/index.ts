@@ -1,5 +1,13 @@
 import '../../scss/style.scss';
 
+import '../polyfiles';
+import { domReady } from '../helpers';
+
+
+domReady(() => {
+  // content 
+});
+
 const buttons = document.querySelectorAll('button');
 
 buttons.forEach((button: HTMLElement) => {

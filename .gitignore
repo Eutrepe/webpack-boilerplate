@@ -2,6 +2,7 @@
 
 # compiled output
 /dist
+/public
 /web
 /tmp
 /out-tsc

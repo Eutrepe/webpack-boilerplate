@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./web/",
+    "outDir": "./public/",
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "esnext",

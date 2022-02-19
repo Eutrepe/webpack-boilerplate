@@ -3,7 +3,6 @@ const { merge } = require('webpack-merge');
 
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
@@ -29,6 +28,8 @@ const commonConfig = merge([
   parts.loadHTML(),
   parts.loadPug(),
   parts.loadImages(),
+  parts.loadVideos(),
+  parts.loadAudios(),
   parts.loadJavaScript(),
   parts.loadTypescript(),
   parts.loadFonts(),
@@ -55,6 +56,7 @@ const commonConfig = merge([
         inject: 'head',
         meta: defaultMeta,
         alwaysWriteToDisk: true,
+        scriptLoading: 'defer',
       }),
       new HtmlWebPackPlugin({
         filename: 'about.html',
@@ -63,12 +65,9 @@ const commonConfig = merge([
         inject: 'head',
         meta: defaultMeta,
         alwaysWriteToDisk: true,
+        scriptLoading: 'defer',
       }),
       // Pages END
-
-      new ScriptExtHtmlWebpackPlugin({
-        defaultAttribute: 'defer',
-      }),
       
       new FaviconsWebpackPlugin({
         logo: './src/static/favicon.jpg',
