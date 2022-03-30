@@ -196,3 +196,38 @@ export const getCookie = (cname: string): string => {
   }
   return "";
 }
+
+export const setQueryParams = (name: string, value: string): void => {
+  if ('URLSearchParams' in window) {
+    var searchParams = new URLSearchParams(window.location.search)
+    searchParams.set(name, value);
+    var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString() + window.location.hash;
+    history.pushState(null, '', newRelativePathQuery);
+  }
+}
+
+
+export const deleteQueryParams = (name: string): void => {
+  if ('URLSearchParams' in window) {
+    var searchParams = new URLSearchParams(window.location.search)
+    searchParams.delete(name);
+    var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString() + window.location.hash;
+    history.pushState(null, '', newRelativePathQuery);
+  }
+}
+
+
+
+
+export const getQueryParams = (name: string): string => {
+  if ('URLSearchParams' in window) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const param = urlParams.get(name);
+    if (param) {
+      return param;
+    }
+    return ''; 
+  }
+
+  return '';
+}
