@@ -11,13 +11,10 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "build:analyzer": "webpack-bundle-analyzer --port 4200 stats.json",
     "build:full": "concurrently 'npm:build:code' 'npm:build:stats'",
-
     "build:en": "AUTOPREFIXER_GRID=autoplace webpack --mode=production --progress --env prod lang=en",
     "build:pl": "AUTOPREFIXER_GRID=autoplace webpack --mode=production --progress --env prod lang=pl",
-
     "build:after": "cp src/index.html public/",
     "build": "concurrently 'npm:build:pl' 'npm:build:en' && npm run build:after",
-
     "po2csv": "concurrently 'npm:po2csv:en' 'npm:po2csv:pl'",
     "po2csv:en": "node scripts/po2csv.js i18n/en.po > i18n/csv/en.csv",
     "po2csv:pl": "node scripts/po2csv.js i18n/pl.po > i18n/csv/pl.csv",
@@ -69,7 +66,6 @@
     "extract-loader": "^5.1.0",
     "favicons": "^6.2.2",
     "favicons-webpack-plugin": "^5.0.2",
-    "fs": "^0.0.1-security",
     "gettext-to-messageformat": "^0.4.0",
     "git-revision-webpack-plugin": "^5.0.0",
     "html-loader": "^3.1.0",
@@ -83,7 +79,7 @@
     "postcss": "^8.4.12",
     "postcss-loader": "^6.2.1",
     "precss": "^4.0.0",
-    "prettier": "^2.5.1",
+    "prettier": "^2.6.2",
     "pug": "^3.0.2",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.49.11",
