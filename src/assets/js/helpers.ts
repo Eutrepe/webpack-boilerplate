@@ -231,3 +231,42 @@ export const getQueryParams = (name: string): string => {
 
   return '';
 }
+
+
+export const debounce = (cb: Function, delay: number = 1000): Function => {
+  let timeout: NodeJS.Timeout;
+
+  return (...args: string[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      cb(...args);
+    }, delay);
+  }
+}
+
+export const throttle = (cb: Function, delay: number = 1000): Function => {
+  let shouldWait = false;
+  let waitingArgs: string[] | null = null;
+
+  const timeoutFunc = () => {
+    if (waitingArgs == null) {
+      shouldWait = false;
+    } else {
+      cb(...waitingArgs);
+      waitingArgs = null;
+      setTimeout(timeoutFunc, delay);
+    }
+  }
+
+  return (...args: string[]) => {
+    if (shouldWait) {
+      waitingArgs = args;
+      return;
+    }
+
+    cb(...args);
+    shouldWait = true;
+
+    setTimeout(timeoutFunc, delay);
+  }
+}
