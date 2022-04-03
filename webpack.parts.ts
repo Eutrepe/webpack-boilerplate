@@ -339,7 +339,7 @@ exports.loadFonts = () => (
 );
 
 
-exports.devServer = ({ host = `localhost`, port = `8080` } = {}) => ({
+exports.devServer = ({ host = `localhost`, port = `8080`, open = true } = {}) => ({
   devServer: {
     //
     // If you use Docker, Vagrant or Cloud9, set
@@ -349,7 +349,7 @@ exports.devServer = ({ host = `localhost`, port = `8080` } = {}) => ({
     // unlike default `localhost`.
     host: host, // Defaults to `localhost`
     port: port, // Defaults to 8080
-    open: true, // Open the page in browser
+    open: open, // Open the page in browser
     historyApiFallback: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
   },

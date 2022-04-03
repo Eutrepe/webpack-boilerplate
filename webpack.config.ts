@@ -117,7 +117,7 @@ const commonConfig = merge([
 
       // Pages START
       new HtmlWebPackPlugin({
-        filename: `${LANG}/index.html`,
+        filename: `index-${LANG}.html`,
         chunks: ['homePage'],
         template: './src/pages/index.pug',
         inject: 'head',
@@ -131,7 +131,7 @@ const commonConfig = merge([
         },
       }),
       new HtmlWebPackPlugin({
-        filename: `${LANG}/about.html`,
+        filename: `about-${LANG}.html`,
         chunks: ['aboutPage'],
         template: './src/pages/about.html',
         inject: 'head',
@@ -176,6 +176,7 @@ const developmentConfig = merge([
     // Customize host/port here if needed
     host: process.env.HOST,
     port: process.env.PORT,
+    open: [`index-${LANG}.html`],
   }),
   parts.generateSourceMaps({ type: 'eval-source-map' }),
   parts.loadCSS(),
