@@ -74,16 +74,16 @@ export const initCounters = (wrapper: Element): void => {
       }
 
       if (isIntegerNumber) {
-        item.textContent = formatNumber(currentValue.toFixed(0));
+        item.textContent = formatNumberThousand(currentValue.toFixed(0));
       } else {
-        item.textContent = formatNumber(currentValue.toFixed(1));
+        item.textContent = formatNumberThousand(currentValue.toFixed(1));
       }
     }, speed / (targetValue / step));
   });
 }
 
 
-function formatNumber (num: number | string) {
+function formatNumberThousand (num: number | string) {
   return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 }
 
@@ -270,3 +270,98 @@ export const throttle = (cb: Function, delay: number = 1000): Function => {
     setTimeout(timeoutFunc, delay);
   }
 }
+
+
+export function randomNumberBetween(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+
+export function sleep<T>(duration: number): Promise<T> {
+  return new Promise(resolve => {
+    setTimeout(resolve, duration);
+  })
+}
+
+
+export function memoize(cb: Function) {
+  const cache = new Map();
+
+  return (...args: any) => {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) return cache.get(key);
+
+    const result = cb(...args);
+    cache.set(key, result);
+    return result;
+  }
+}
+
+
+export function sample<T>(array: Array<T>): T {
+  return array[randomNumberBetween(0, array.length - 1)];
+}
+
+
+export type ANY_OBJECT = {
+  [key: string| number]: any;
+}
+export function pluck<T extends ANY_OBJECT, K>(array: Array<T>, key: string): Array<K> {
+  return array.map(element => element[key]);
+}
+
+
+export function groupBy<T extends ANY_OBJECT>(array: Array<T>, key: string) {
+  return array.reduce((group: ANY_OBJECT, element) => {
+    const keyValue = element[key];
+    return { ...group, [keyValue]: [...(group[keyValue] ?? []), element] };
+  }, {});
+}
+
+
+const CURRENCY_FORMATTER = new Intl.NumberFormat(undefined, {
+  currency: 'PLN',
+  style: 'currency',
+})
+export function formatCurrency(number: number): string {
+  return CURRENCY_FORMATTER.format(number);
+}
+
+
+const NUMBER_FORMATTER = new Intl.NumberFormat(undefined)
+export function formatNumber(number: number): string {
+  return NUMBER_FORMATTER.format(number);
+}
+
+const COMPACT_NUMBER_FORMATTER = new Intl.NumberFormat(undefined, {
+  notation: 'compact',
+})
+export function formatCompactNumber(number: number): string {
+  return COMPACT_NUMBER_FORMATTER.format(number)
+}
+
+
+const DIVISIONS: Array<{amount: number; name: Intl.RelativeTimeFormatUnit}> = [
+  { amount: 60, name: 'seconds' },
+  { amount: 60, name: 'minutes' },
+  { amount: 24, name: 'hours' },
+  { amount: 7, name: 'days' },
+  { amount: 4.34524, name: 'weeks' },
+  { amount: 12, name: 'months' },
+  { amount: Number.POSITIVE_INFINITY, name: 'years' },
+]
+const RELATIVE_DATE_FORMATTER = new Intl.RelativeTimeFormat(undefined, {
+  numeric: 'auto',
+})
+export function formatRelativeDate(toDate: number, fromDate = new Date()): string | undefined {
+  let duration = (toDate - fromDate.getTime()) / 1000;
+
+  for (let i = 0; i <= DIVISIONS.length; i++) {
+    const division = DIVISIONS[i];
+    if (Math.abs(duration) < division.amount) {
+      return RELATIVE_DATE_FORMATTER.format(Math.round(duration), division.name);
+    }
+    duration /= division.amount;
+  }
+}
+
