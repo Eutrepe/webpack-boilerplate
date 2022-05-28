@@ -272,7 +272,7 @@ export const throttle = (cb: Function, delay: number = 1000): Function => {
 }
 
 
-export function randomNumberBetween(min: number, max: number): number {
+export const randomNumberBetween = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
@@ -306,6 +306,7 @@ export function sample<T>(array: Array<T>): T {
 export type ANY_OBJECT = {
   [key: string| number]: any;
 }
+
 export function pluck<T extends ANY_OBJECT, K>(array: Array<T>, key: string): Array<K> {
   return array.map(element => element[key]);
 }
@@ -353,7 +354,10 @@ const DIVISIONS: Array<{amount: number; name: Intl.RelativeTimeFormatUnit}> = [
 const RELATIVE_DATE_FORMATTER = new Intl.RelativeTimeFormat(undefined, {
   numeric: 'auto',
 })
-export function formatRelativeDate(toDate: number, fromDate = new Date()): string | undefined {
+
+
+
+export const formatRelativeDate = (toDate: number, fromDate = new Date()): string | undefined => {
   let duration = (toDate - fromDate.getTime()) / 1000;
 
   for (let i = 0; i <= DIVISIONS.length; i++) {
@@ -365,3 +369,12 @@ export function formatRelativeDate(toDate: number, fromDate = new Date()): strin
   }
 }
 
+
+export const isTouchEnabled = () => {
+  return ( 'ontouchstart' in window ) || ( navigator.maxTouchPoints > 0 );
+}
+
+
+export const addMultipleEventListener = (element: HTMLElement | Element, events: any, handler: any) => {
+  events.forEach((eventName: string) => element.addEventListener(eventName, handler))
+}
