@@ -3,9 +3,8 @@ import '../../scss/style.scss';
 import '../polyfiles';
 import { domReady } from '../helpers';
 
-
 domReady(() => {
-  // content 
+  // content
 });
 
 const buttons = document.querySelectorAll('button');
