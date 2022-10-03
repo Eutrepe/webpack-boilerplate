@@ -63,7 +63,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "extract-loader": "^5.1.0",
-    "favicons": "^6.2.2",
+    "favicons": "^7.0.1",
     "favicons-webpack-plugin": "^5.0.2",
     "gettext-to-messageformat": "^0.4.0",
     "git-revision-webpack-plugin": "^5.0.0",
