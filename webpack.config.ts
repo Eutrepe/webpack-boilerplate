@@ -5,8 +5,8 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const FS = require('fs');
 const MessageFormat = require('@messageformat/core');
@@ -25,30 +25,38 @@ if (LANG) {
 
   try {
     let po = FS.readFileSync(poFile, 'utf8');
-    
+
     try {
       const vars = FS.readFileSync(varsFile, 'utf8');
       po += `\n${vars}\n`;
-
     } catch (e: any) {
       if ('ENOENT' === e.code) {
-        console.error(`${parts.chalk.bold.red('Missing vars file:')} ${parts.chalk.bold.yellow(varsFile)}`);
+        console.error(
+          `${parts.chalk.bold.red(
+            'Missing vars file:'
+          )} ${parts.chalk.bold.yellow(varsFile)}`
+        );
       }
     }
     const { parsePo } = require('gettext-to-messageformat');
-    const { headers, pluralFunction, translations } = parsePo(po.replace(/%(?![s|n|1])/g, EscStr));
+    const { headers, pluralFunction, translations } = parsePo(
+      po.replace(/%(?![s|n|1])/g, EscStr)
+    );
     const mf = new MessageFormat(LANG, {
-      customFormatters: { [headers.language]: pluralFunction }
+      customFormatters: { [headers.language]: pluralFunction },
     });
 
-    for(const [key, value] of Object.entries(translations)) {
+    for (const [key, value] of Object.entries(translations)) {
       i18n[key] = mf.compile(translations[key]);
     }
-
   } catch (e: any) {
-    console.error(e)
+    console.error(e);
     if ('ENOENT' === e.code) {
-      console.error(`${parts.chalk.bold.red('Missing translation file:')} ${parts.chalk.bold.yellow(poFile)}`);
+      console.error(
+        `${parts.chalk.bold.red(
+          'Missing translation file:'
+        )} ${parts.chalk.bold.yellow(poFile)}`
+      );
     }
   }
 }
@@ -67,17 +75,22 @@ const defaultMeta = {
   },
 };
 
-
 // i18n START
 const _ = (str: string, params: any) => {
     if (str in i18n) {
       const regexp = /( |&nbsp;)+([\w]{1,2})?([\s])+/gi;
-      const result = i18n[str](params).replace(new RegExp(EscStr, 'g'), '%').replace(/\n/g, '<br />');
+      const result = i18n[str](params)
+        .replace(new RegExp(EscStr, 'g'), '%')
+        .replace(/\n/g, '<br />');
 
       return result;
       // return -1 === result.indexOf('//') ? result.replace(/-/gi, '&#8209;') : result;
     } else {
-      console.error(`${parts.chalk.bold.red('Missing translation for')} ${parts.chalk.bold.yellow(str)}`);
+      console.error(
+        `${parts.chalk.bold.red(
+          'Missing translation for'
+        )} ${parts.chalk.bold.yellow(str)}`
+      );
       return `[ ${str} ]`;
     }
   },
@@ -89,7 +102,6 @@ const _ = (str: string, params: any) => {
     });
   };
 // i18n END
-
 
 const commonConfig = merge([
   parts.loadHTML(),
@@ -104,10 +116,12 @@ const commonConfig = merge([
   {
     entry: {
       homePage: `${parts.path.resolve(__dirname)}/src/assets/js/pages/index.ts`,
-      aboutPage: `${parts.path.resolve(__dirname)}/src/assets/js/pages/about.js`,
+      aboutPage: `${parts.path.resolve(
+        __dirname
+      )}/src/assets/js/pages/about.js`,
     },
 
-    target: ['web', 'es5'],
+    target: ['web', 'es6'],
     resolve: {
       extensions: ['.ts', '.js'],
     },
@@ -145,7 +159,7 @@ const commonConfig = merge([
         },
       }),
       // Pages END
-      
+
       new FaviconsWebpackPlugin({
         logo: './src/static/favicon.jpg',
         prefix: 'favicons/',
@@ -164,7 +178,7 @@ const productionConfig = merge([
   {
     plugins: [
       new BundleAnalyzerPlugin({
-        analyzerMode: 'disabled'
+        analyzerMode: 'disabled',
       }),
     ],
   },
@@ -181,7 +195,6 @@ const developmentConfig = merge([
   parts.generateSourceMaps({ type: 'eval-source-map' }),
   parts.loadCSS(),
 ]);
-
 
 module.exports = (mode: any) => {
   if (mode) {
