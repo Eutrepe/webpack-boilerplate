@@ -341,6 +341,7 @@ exports.devServer = ({
     open: open, // Open the page in browser
     historyApiFallback: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
+    watchFiles: ['src/**/*'],
   },
 });
 
