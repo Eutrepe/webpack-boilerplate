@@ -7,6 +7,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const Dotenv = require('dotenv-webpack');
 
 const FS = require('fs');
 const MessageFormat = require('@messageformat/core');
@@ -115,10 +116,10 @@ const commonConfig = merge([
   parts.clean(),
   {
     entry: {
-      homePage: `${parts.path.resolve(__dirname)}/src/assets/js/pages/index.ts`,
+      homePage: `${parts.path.resolve(__dirname)}/src/assets/ts/pages/index.ts`,
       aboutPage: `${parts.path.resolve(
         __dirname
-      )}/src/assets/js/pages/about.js`,
+      )}/src/assets/ts/pages/about.js`,
     },
 
     target: ['web', 'es6'],
@@ -165,6 +166,7 @@ const commonConfig = merge([
         prefix: 'favicons/',
       }),
       new HtmlWebpackHarddiskPlugin(),
+      new Dotenv(),
     ],
   },
 ]);
