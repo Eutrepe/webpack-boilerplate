@@ -17,6 +17,8 @@ h1,
 h2,
 h3,
 h4,
+h5,
+h6,
 p,
 ul[class],
 ol[class],
@@ -29,10 +31,20 @@ dd {
     margin: 0;
 }
 
+
+h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+}
+
+
+p {
+    text-wrap: pretty;
+}
+
 /* Set core body defaults */
 body {
     min-height: 100vh;
-    scroll-behavior: smooth;
+    min-height: 100dvh;
     text-rendering: optimizeSpeed;
     line-height: 1.5;
 }
@@ -66,3 +78,86 @@ textarea,
 select {
     font: inherit;
 }
+
+
+@media (prefers-reduced-motion: no-preference) {
+    :has(:target) {
+        scroll-behavior: smooth;
+        scroll-padding-top: 10px;
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-delay: -1ms !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      background-attachment: initial !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+    }
+  }
+  
+  .no-animation {
+    *,
+    ::before,
+    ::after {
+      animation-delay: -1ms !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      background-attachment: initial !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+    }
+  }
+  
+  .is-touch-device {
+    * {
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+      -webkit-touch-callout: none !important;
+      -webkit-user-select: none !important;
+      -khtml-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+      cursor: default !important;
+  
+      &:focus {
+        outline: none !important;
+      }
+  
+      &::selection {
+        background-color: transparent !important;
+      }
+    }
+  
+    a,
+    button {
+      animation-delay: -1ms !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      background-attachment: initial !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0s !important;
+      transition-delay: 0s !important;
+  
+      &:hover,
+      &:active,
+      &:link,
+      &:visited {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        color: inherit !important;
+        box-shadow: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+      }
+    }
+  }
+  
