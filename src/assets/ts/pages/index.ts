@@ -2,9 +2,24 @@ import '../../scss/style.scss';
 
 import '../polyfiles';
 import { domReady } from '../helpers';
+import { initMobile } from '../mobile-nav';
+
+let BODY: HTMLElement | null = null;
 
 domReady(() => {
-  // content
+  BODY = document.querySelector('body');
+  if (!BODY) return;
+});
+
+window.addEventListener('load', () => {
+  if (!BODY) return;
+  
+  initMobile(BODY);
+
+  BODY.style.opacity = '1';
+  BODY.classList.remove('no-animation');
+
+  if (BODY) BODY.append(testDynamic());
 });
 
 const buttons = document.querySelectorAll('button');
@@ -48,6 +63,5 @@ const testDynamic = (text = 'Hello world'): HTMLElement => {
   return element;
 };
 
-const body = document.querySelector('body');
 
-if (body) body.append(testDynamic());
+

@@ -134,7 +134,8 @@ const commonConfig = merge([
       new HtmlWebPackPlugin({
         filename: `index-${LANG}.html`,
         chunks: ['homePage'],
-        template: './src/pages/index.pug',
+        // template: './src/pages/index.pug',
+        template: './src/pages/index.html',
         inject: 'head',
         meta: defaultMeta,
         alwaysWriteToDisk: true,

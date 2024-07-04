@@ -1,0 +1,63 @@
+@import '../variables';
+@import '../mixins';
+
+
+.mobile-navigation {
+    background-color: tomato;
+    height: 100vh;
+    top: 0;
+    left: auto;
+    max-width: 320px;
+    overflow-y: auto;
+    padding: 25px 15px 30px;
+    position: fixed;
+    right: 0;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1002;
+    width: 100%;
+
+    @include sm-min {
+      max-width: 500px;
+    }
+
+  
+    &__header {
+
+    }
+ 
+  
+    &__body {
+  
+    }
+  
+    &__footer {
+    
+    }
+
+     
+    &__overlay {
+        background-color: #35275eaa;
+        display: block;
+        height: 100vh;
+        left: 0;
+        opacity: 0;
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        transition: opacity 0.3s ease-in-out;
+        width: 100%;
+        z-index: 1001;
+      }
+  }
+  
+  .is-mobile-menu-open {
+    .mobile-navigation {
+      transform: translateX(0);
+  
+      &__overlay {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+  }

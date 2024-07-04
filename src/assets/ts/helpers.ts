@@ -206,7 +206,6 @@ export const setQueryParams = (name: string, value: string): void => {
   }
 }
 
-
 export const deleteQueryParams = (name: string): void => {
   if ('URLSearchParams' in window) {
     var searchParams = new URLSearchParams(window.location.search)
@@ -215,9 +214,6 @@ export const deleteQueryParams = (name: string): void => {
     history.pushState(null, '', newRelativePathQuery);
   }
 }
-
-
-
 
 export const getQueryParams = (name: string): string => {
   if ('URLSearchParams' in window) {
@@ -231,7 +227,6 @@ export const getQueryParams = (name: string): string => {
 
   return '';
 }
-
 
 export const debounce = (cb: Function, delay: number = 1000): Function => {
   let timeout: NodeJS.Timeout;
@@ -276,7 +271,6 @@ export const randomNumberBetween = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-
 export function sleep<T>(duration: number): Promise<T> {
   return new Promise(resolve => {
     setTimeout(resolve, duration);
@@ -303,9 +297,7 @@ export function sample<T>(array: Array<T>): T {
 }
 
 
-export type ANY_OBJECT = {
-  [key: string| number]: any;
-}
+export type ANY_OBJECT = Record<string | number, any>
 
 export function pluck<T extends ANY_OBJECT, K>(array: Array<T>, key: string): Array<K> {
   return array.map(element => element[key]);
@@ -354,7 +346,6 @@ const DIVISIONS: Array<{amount: number; name: Intl.RelativeTimeFormatUnit}> = [
 const RELATIVE_DATE_FORMATTER = new Intl.RelativeTimeFormat(undefined, {
   numeric: 'auto',
 })
-
 
 
 export const formatRelativeDate = (toDate: number, fromDate = new Date()): string | undefined => {
