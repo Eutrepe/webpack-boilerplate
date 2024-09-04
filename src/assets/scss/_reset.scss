@@ -37,7 +37,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-p {
+p,
+li,
+figcaption {
     text-wrap: pretty;
 }
 
@@ -161,3 +163,11 @@ select {
     }
   }
   
+
+  header,
+  main,
+  section,
+  article,
+  footer {
+    container-type: inline-size;
+  }
