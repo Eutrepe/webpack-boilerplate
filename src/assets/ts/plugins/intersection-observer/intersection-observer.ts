@@ -11,31 +11,38 @@ export const initObserver = (
 ): void => {
   let wasActivated = false;
 
-  const observer = new IntersectionObserver((entries: Array<IntersectionObserverEntry>) => {
-    entries.forEach((entry: IntersectionObserverEntry) => {
-      if (entry.isIntersecting) {
-        if (onActive && typeof onActive === 'function') {
-          onActive();
-        }
+  const observer = new IntersectionObserver(
+    (entries: Array<IntersectionObserverEntry>) => {
+      entries.forEach((entry: IntersectionObserverEntry) => {
+        if (entry.isIntersecting) {
+          if (onActive && typeof onActive === 'function') {
+            onActive();
+          }
 
-        entry.target.classList.add(activeClass);
+          entry.target.classList.add(activeClass);
 
-        wasActivated = true;
+          wasActivated = true;
 
-        if (invokeOnce && entry.target.classList.contains(activeClass) && observer) {
-          observer.unobserve(element);
-        }
-      } else {
-        if (removeClassAfterLeaving) {
-          entry.target.classList.remove(activeClass);
-        }
+          if (
+            invokeOnce &&
+            entry.target.classList.contains(activeClass) &&
+            observer
+          ) {
+            observer.unobserve(element);
+          }
+        } else {
+          if (removeClassAfterLeaving) {
+            entry.target.classList.remove(activeClass);
+          }
 
-        if (wasActivated && onUnactive && typeof onUnactive === 'function') {
-          onUnactive();
+          if (wasActivated && onUnactive && typeof onUnactive === 'function') {
+            onUnactive();
+          }
         }
-      }
-    });
-  }, settings);
+      });
+    },
+    settings,
+  );
 
   observer.observe(element);
 };

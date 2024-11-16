@@ -1,7 +1,7 @@
 import '../../scss/style.scss';
 
 function resolveAfter2Seconds() {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve('resolvedTS');
     }, 2000);
@@ -23,10 +23,10 @@ const testDynamic = (text = 'Hello world') => {
   element.innerHTML = text;
   element.onclick = () =>
     import('./lazy')
-      .then(lazy => {
+      .then((lazy) => {
         element.textContent = lazy.default;
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
 

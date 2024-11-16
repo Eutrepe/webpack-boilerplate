@@ -1,21 +1,26 @@
 import '../../scss/style.scss';
 
 import '../polyfiles';
-import { domReady } from '../helpers';
+import { domReady, throttle } from '../helpers';
 import { initMobile } from '../mobile-nav';
 import { Carousel } from '../plugins/carousel/carousel';
 import { Counter } from '../plugins/counter/counter';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Glide = require('@glidejs/glide').default;
 
 let BODY: HTMLElement | null = null;
 
 domReady(() => {
   BODY = document.querySelector('body');
   if (!BODY) return;
+
+  initSlider();
 });
 
 window.addEventListener('load', () => {
   if (!BODY) return;
-  
+
   initMobile(BODY);
 
   BODY.style.opacity = '1';
@@ -35,8 +40,70 @@ buttons.forEach((button: HTMLElement) => {
   });
 });
 
+function initSlider(): void {
+  const slider: HTMLElement | null = document.querySelector(
+    '[data-glide-slider]',
+  );
+  const conf: any = {
+    type: 'carousel',
+    perView: 1,
+  };
+
+  if (!slider) return;
+
+  const slidesNumber: number = slider.querySelectorAll(
+    '.glide__slides > li',
+  ).length;
+  const bullets = document.querySelectorAll('[data-glide-welcome-bullet]');
+
+  const updateSliderStatus = throttle(() => {
+    checkGlideResize(glide, slider, slidesNumber);
+  }, 500);
+
+  const glide = new Glide(slider, conf);
+  glide.on('resize', () => {
+    updateSliderStatus();
+  });
+
+  // Automated height on Carousel build
+  glide.on('build.after', function () {
+    glideHandleHeight(slider);
+  });
+
+  // Automated height on Carousel change
+  glide.on('run.after', function () {
+    glideHandleHeight(slider);
+  });
+
+  // glide.on('run.after', () => {
+  //   bullets.forEach((bullet) => {
+  //     const target = bullet.getAttribute('data-glide-welcome-bullet');
+
+  //     if (target === `=${glide.index}`) {
+  //       bullet.classList.add('is-active');
+  //     } else {
+  //       bullet.classList.remove('is-active');
+  //     }
+  //   });
+  // });
+
+  glide.mount();
+  checkGlideResize(glide, slider, slidesNumber);
+
+  bullets.forEach((bullet) => {
+    bullet.addEventListener('click', (event: Event) => {
+      event.preventDefault();
+
+      const target = bullet.getAttribute('data-glide-welcome-bullet');
+      if (!target) return;
+
+      glide.go(target);
+    });
+  });
+}
+
 function resolveAfter2Seconds() {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve('resolvedTS');
     }, 2000);
@@ -58,19 +125,18 @@ const testDynamic = (text = 'Hello world'): HTMLElement => {
   element.innerHTML = text;
   element.onclick = () =>
     import('./lazy')
-      .then(lazy => {
+      .then((lazy) => {
         element.textContent = lazy.default;
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
 
   return element;
 };
 
-
 const initSliders = () => {
-  document.querySelectorAll('[data-carousel]').forEach(carousel => {
+  document.querySelectorAll('[data-carousel]').forEach((carousel) => {
     const animationType = carousel.getAttribute('data-carousel') || 'slide';
     const interval = carousel.getAttribute('data-interval') || '3000';
 
@@ -85,17 +151,13 @@ const initSliders = () => {
   });
 };
 
-
 const initCounters = () => {
   const counters = document.querySelectorAll('[data-counter]');
-  counters.forEach(item => {
-
+  counters.forEach((item) => {
     new Counter(item as HTMLElement, {
       shouldRepeat: true,
-      finishCallback: () => {
-      },
-      preRepeatCallback: () => {
-      },
+      finishCallback: () => {},
+      preRepeatCallback: () => {},
 
       targetValue: 4.8,
       speed: 3000,
@@ -106,3 +168,32 @@ const initCounters = () => {
     });
   });
 };
+
+function checkGlideResize(
+  glide: any,
+  glideEl: HTMLElement,
+  length: number,
+): void {
+  if (length <= glide.settings.perView) {
+    // glide.update({ startAt: 0 }).disable();
+    glide.disable();
+    glideEl.classList.add('is-disabled');
+  } else {
+    glide.enable();
+    glideEl.classList.remove('is-disabled');
+  }
+}
+
+function glideHandleHeight(glideEl: HTMLElement) {
+  const activeSlide: HTMLElement | null = glideEl.querySelector(
+    '.glide__slide--active',
+  );
+  const activeSlideHeight = activeSlide ? activeSlide.offsetHeight : 0;
+
+  const glideTrack: HTMLElement | null = glideEl.querySelector('.glide__track');
+  const glideTrackHeight = glideTrack ? glideTrack.offsetHeight : 0;
+
+  if (glideTrack && activeSlideHeight !== glideTrackHeight) {
+    glideTrack.style.height = `${activeSlideHeight}px`;
+  }
+}

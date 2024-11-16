@@ -1,4 +1,4 @@
-import easingsFunctions from "./easing-functions";
+import easingsFunctions from './easing-functions';
 
 interface CounterConfig {
   shouldRepeat?: boolean;
@@ -36,11 +36,11 @@ export class Counter {
     this.preInitStartCallback = config.preInitStartCallback || null;
     this.preInitCallback = config.preInitCallback || null;
     this.preRepeatCallback = config.preRepeatCallback || null;
-    this.targetValue = parseFloat(config.targetValue as string || '100');
-    this.speed = parseFloat(config.speed as string || '2000');
-    this.step = parseFloat(config.step as string || '1');
-    this.repeatDelay = parseFloat(config.repeatDelay as string || '3000');
-    this.initialDelay = parseFloat(config.initialDelay as string || '0');
+    this.targetValue = parseFloat((config.targetValue as string) || '100');
+    this.speed = parseFloat((config.speed as string) || '2000');
+    this.step = parseFloat((config.step as string) || '1');
+    this.repeatDelay = parseFloat((config.repeatDelay as string) || '3000');
+    this.initialDelay = parseFloat((config.initialDelay as string) || '0');
     this.isIntegerNumber =
       this.isInt(this.targetValue) && this.isInt(this.step);
     this.easing = config.easing || 'linear';
@@ -93,11 +93,11 @@ export class Counter {
 
       if (this.isIntegerNumber) {
         this.element.textContent = this.formatNumberThousand(
-          parseFloat(currentValue.toFixed(0))
+          parseFloat(currentValue.toFixed(0)),
         );
       } else {
         this.element.textContent = this.formatNumberThousand(
-          parseFloat(currentValue.toFixed(1))
+          parseFloat(currentValue.toFixed(1)),
         );
       }
     };

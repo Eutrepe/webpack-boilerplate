@@ -3,7 +3,9 @@ import { BrowserInfo } from './types';
 export const browserInfo = (): BrowserInfo => {
   const userAgent = navigator.userAgent;
   let matcher =
-    userAgent.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    userAgent.match(
+      /(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i,
+    ) || [];
   let tmpResult;
 
   if (/trident/i.test(matcher[1])) {
@@ -33,7 +35,9 @@ export const browserInfo = (): BrowserInfo => {
     }
   }
 
-  matcher = matcher[2] ? [matcher[1], matcher[2]] : [navigator.appName, navigator.appVersion, '-?'];
+  matcher = matcher[2]
+    ? [matcher[1], matcher[2]]
+    : [navigator.appName, navigator.appVersion, '-?'];
   tmpResult = userAgent.match(/version\/(\d+)/i);
 
   if (tmpResult != null) {

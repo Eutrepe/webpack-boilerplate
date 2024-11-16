@@ -1,15 +1,18 @@
-@import 'reset';
-@import 'fonts';
-@import 'helpers';
-@import 'global';
+@use 'reset';
+@use 'fonts';
+@use 'helpers';
+@use 'global';
 
-
-@import '../ts/plugins/carousel/carousel.scss';
+// custom plugins
+@use '../ts/plugins/carousel/carousel.scss';
 
 // components
+@use 'components/test';
+@use 'components/nav-menu';
 
-@import 'components/test';
-@import 'components/nav-menu';
+// plugins
+@import '@glidejs/glide/dist/css/glide.core.css';
+@import '@glidejs/glide/dist/css/glide.theme.css';
 
 body {
   // display: none;

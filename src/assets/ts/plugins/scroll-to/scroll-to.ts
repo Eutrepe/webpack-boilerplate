@@ -42,8 +42,6 @@ const Easings: EasingsType = {
   },
 };
 
-
-
 export class ScrollTo {
   private defaultSettings: ScrollToConfig = {
     duration: 350,
@@ -70,8 +68,14 @@ export class ScrollTo {
   }
 
   private clearRaf = () => {
-    if (!this.isFinished && this.settings.onBreak && typeof this.settings.onBreak === 'function') {
-      const arg = this.settings.onBreakParams ? this.settings.onBreakParams : [];
+    if (
+      !this.isFinished &&
+      this.settings.onBreak &&
+      typeof this.settings.onBreak === 'function'
+    ) {
+      const arg = this.settings.onBreakParams
+        ? this.settings.onBreakParams
+        : [];
       this.settings.onBreak(...arg);
     }
 
@@ -92,16 +96,24 @@ export class ScrollTo {
     const time = Math.min(1, (now - this.startTime) / this.settings.duration);
     const timeFunction = this.easings[this.settings.easing](time);
     this.isMoved = true;
-   
 
     window.scroll(
       0,
-      Math.ceil(timeFunction * (destinationOffsetToScroll - this.start) + this.start),
+      Math.ceil(
+        timeFunction * (destinationOffsetToScroll - this.start) + this.start,
+      ),
     );
-    if (window.pageYOffset === destinationOffsetToScroll || Math.abs(window.pageYOffset - destinationOffsetToScroll) <= 1 || (window.pageYOffset <= 0 && destinationOffsetToScroll < 0))
-     {
+    if (
+      window.pageYOffset === destinationOffsetToScroll ||
+      Math.abs(window.pageYOffset - destinationOffsetToScroll) <= 1 ||
+      (window.pageYOffset <= 0 && destinationOffsetToScroll < 0)
+    ) {
       this.isFinished = true;
-      if (this.isMoved && this.settings.onEnd && typeof this.settings.onEnd === 'function') {
+      if (
+        this.isMoved &&
+        this.settings.onEnd &&
+        typeof this.settings.onEnd === 'function'
+      ) {
         const arg = this.settings.onEndParams ? this.settings.onEndParams : [];
         this.settings.onEnd(...arg);
       }
@@ -123,7 +135,9 @@ export class ScrollTo {
     };
 
     if (this.settings.onStart && typeof this.settings.onStart === 'function') {
-      const arg = this.settings.onStartParams ? this.settings.onStartParams : [];
+      const arg = this.settings.onStartParams
+        ? this.settings.onStartParams
+        : [];
       this.settings.onStart(...arg);
     }
 
@@ -147,10 +161,15 @@ export class ScrollTo {
     );
 
     const windowHeight =
-      window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+      window.innerHeight ||
+      document.documentElement.clientHeight ||
+      document.body.clientHeight;
 
     const destinationOffset =
-      (typeof target === 'number' ? target : target.getBoundingClientRect().top + window.scrollY) + this.settings.offset;
+      (typeof target === 'number'
+        ? target
+        : target.getBoundingClientRect().top + window.scrollY) +
+      this.settings.offset;
     const destinationOffsetToScroll = Math.round(
       documentHeight - destinationOffset < windowHeight
         ? documentHeight - windowHeight

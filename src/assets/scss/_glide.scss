@@ -1,0 +1,77 @@
+@use '../mixins/medias';
+
+.glide {
+  .glide__arrow {
+    position: absolute;
+    background-color: var(--white);
+    background-image: none;
+    display: block;
+    opacity: 0.8;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    transition: opacity 0.3s linear;
+    cursor: pointer;
+    font-size: 20px;
+    top: 30%;
+
+    @include medias.xs-min {
+      top: 50%;
+    }
+
+    @include medias.md-min {
+      width: 74px;
+      height: 74px;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      display: block;
+      width: 16px;
+      height: 16px;
+      transform: rotate(45deg);
+      margin-top: 2.5px;
+      border-style: solid;
+      border-color: var(--blue);
+      border-width: 0;
+
+      @include medias.md-min {
+        top: 24px;
+      }
+    }
+  }
+
+  .glide__arrow--left {
+    left: 1em;
+
+    &:before {
+      left: 19px;
+      border-bottom-width: 1px;
+      border-left-width: 1px;
+
+      @include medias.md-min {
+        left: 31px;
+      }
+    }
+  }
+
+  .glide__arrow--right {
+    right: 1em;
+
+    &:before {
+      right: 19px;
+      border-top-width: 1px;
+      border-right-width: 1px;
+
+      @include medias.md-min {
+        right: 30px;
+      }
+    }
+  }
+}

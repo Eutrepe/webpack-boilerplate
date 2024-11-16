@@ -1,5 +1,4 @@
-@import 'variables';
-@import 'mixins';
+@use 'mixins/medias';
 
 html,
 body,
@@ -14,14 +13,14 @@ body {
   // overflow-x: hidden;
   -ms-overflow-style: scrollbar;
   -webkit-font-smoothing: antialiased;
-  background-color: $white;
+  background-color: var(--white);
 }
 
 body {
   padding-right: 0 !important;
   font-weight: 400;
   background-repeat: no-repeat;
-  color: $black;
+  color: var(--black);
   min-height: 100vh;
 
   // hack for slider in iframe

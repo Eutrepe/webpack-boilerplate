@@ -39,7 +39,7 @@ function edgePolyfill(): void {
         get(): boolean {
           return this.intersectionRatio > 0;
         },
-      }
+      },
     );
   }
 }

@@ -1,5 +1,4 @@
 export type BrowserInfo = {
-    name: string;
-    version: string;
-  };
-  
+  name: string;
+  version: string;
+};
