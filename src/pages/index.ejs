@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+
+<head>
+  <title>Home</title>
+  <meta name="description" content="Description">
+
+  <style type="text/css">
+    body {
+      opacity: 0;
+      transition: opacity .3s ease-in-out;
+    }
+  </style>
+
+  <noscript>
+    <style type="text/css">
+      body {
+        opacity: 1;
+      }
+    </style>
+  </noscript>
+</head>
+
+<body class="no-animation">
+
+
+
+  <h1>Home</h1>
+  <hr />
+  <a href="./about.html">Go to about page</a>
+
+  <button>button 1</button>
+  <button>button 2</button>
+  <button>button 3</button>
+
+  <button data-navigation-open class="">Menu</button>
+
+
+  <div class="small-container">
+    <figure class="carousel" data-carousel="fade">
+      <div class="carousel__content">
+        <div class="carousel__item">
+          <p>Text 1</p>
+        </div>
+        <div class="carousel__item">
+          <p>Text 2</p>
+        </div>
+        <div class="carousel__item">
+          <p>Text 3</p>
+        </div>
+        <div class="carousel__item">
+          <p>Text 4</p>
+        </div>
+      </div>
+    </figure>
+  
+    <p><%= _('test') %></p>
+    <p class="counter" data-counter>4.8</p>
+  
+    <div class="carousel" data-carousel="slide">
+      <div class="carousel__content">
+        <div class="carousel__item">
+          <p>Text 1</p>
+        </div>
+        <div class="carousel__item">
+          <p>Text 2</p>
+        </div>
+        <div class="carousel__item">
+          <p>Text 3</p>
+        </div>
+        <div class="carousel__item">
+          <p>Text 4</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-navigation" data-navigation-mobile>
+    <div class="mobile-navigation__header">
+      <button data-navigation-close class="">Zamknij</button>
+    </div>
+
+    <div class="mobile-navigation__content">
+
+      <div class="mobile-navigation__body">
+
+        <ul class="">
+          <li>
+            <a href="#">Kontakt</a>
+          </li>
+          <li>
+            <a href="#">Regulamin</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mobile-navigation__footer">
+        Footer
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-navigation__overlay"></div>
+
+</body>
+
+</html>

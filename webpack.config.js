@@ -1,25 +1,33 @@
-require('dotenv').config();
-const { merge } = require('webpack-merge');
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const Dotenv = require('dotenv-webpack');
+// For ES Modules, __filename and __dirname are not defined by default.
+// Manually define them:
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const FS = require('fs');
-const MessageFormat = require('@messageformat/core');
-const compileModule = require('@messageformat/core/compile-module');
+import 'dotenv/config';
+import { merge } from 'webpack-merge';
 
-const parts = require('./webpack.parts');
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import HtmlWebPackPlugin from 'html-webpack-plugin';
+import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
+import HtmlWebpackHarddiskPlugin from 'html-webpack-harddisk-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import Dotenv from 'dotenv-webpack';
+
+import FS from 'fs';
+import MessageFormat from '@messageformat/core';
+
+import chalk from 'chalk';
+
+import * as parts from './webpack.parts.js';
 
 // i18n START
 
-const LANG: string = parts.EnvCheckerPlugin.findParam('lang');
+const LANG = parts.EnvCheckerPlugin.findParam('lang');
 const EscStr = '&-p-&';
-let i18n: any = {};
+let i18n = {};
 if (LANG) {
   const poFile = `i18n/${LANG}.po`;
   const varsFile = `i18n/vars/${LANG}.po`;
@@ -30,16 +38,17 @@ if (LANG) {
     try {
       const vars = FS.readFileSync(varsFile, 'utf8');
       po += `\n${vars}\n`;
-    } catch (e: any) {
-      if ('ENOENT' === e.code) {
+    } catch (e) {
+      if (e.code === 'ENOENT') {
         console.error(
-          `${parts.chalk.bold.red(
-            'Missing vars file:'
-          )} ${parts.chalk.bold.yellow(varsFile)}`
+          `${chalk.bold.red('Missing vars file:')} ${chalk.bold.yellow(varsFile)}`
         );
       }
     }
-    const { parsePo } = require('gettext-to-messageformat');
+
+    const gettextToMessageFormat = await import('gettext-to-messageformat');
+    const { parsePo } = gettextToMessageFormat.default;
+
     const { headers, pluralFunction, translations } = parsePo(
       po.replace(/%(?![s|n|1])/g, EscStr)
     );
@@ -50,13 +59,11 @@ if (LANG) {
     for (const [key, value] of Object.entries(translations)) {
       i18n[key] = mf.compile(translations[key]);
     }
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
-    if ('ENOENT' === e.code) {
+    if (e.code === 'ENOENT') {
       console.error(
-        `${parts.chalk.bold.red(
-          'Missing translation file:'
-        )} ${parts.chalk.bold.yellow(poFile)}`
+        `${chalk.bold.red('Missing translation file:')} ${chalk.bold.yellow(poFile)}`
       );
     }
   }
@@ -77,31 +84,28 @@ const defaultMeta = {
 };
 
 // i18n START
-const _ = (str: string, params: any) => {
-    if (str in i18n) {
-      const regexp = /( |&nbsp;)+([\w]{1,2})?([\s])+/gi;
-      const result = i18n[str](params)
-        .replace(new RegExp(EscStr, 'g'), '%')
-        .replace(/\n/g, '<br />');
+const _ = (str, params) => {
+  if (str in i18n) {
+    const result = i18n[str](params)
+      .replace(new RegExp(EscStr, 'g'), '%')
+      .replace(/\n/g, '<br />');
 
-      return result;
-      // return -1 === result.indexOf('//') ? result.replace(/-/gi, '&#8209;') : result;
-    } else {
-      console.error(
-        `${parts.chalk.bold.red(
-          'Missing translation for'
-        )} ${parts.chalk.bold.yellow(str)}`
-      );
-      return `[ ${str} ]`;
-    }
-  },
-  _l = (str: string, params: any, links: string[]) => {
-    str = _(str, params);
-    let n = 0;
-    return str.replace(/\[\[(.+?)\]\]/g, function (match, contents) {
-      return `<a ${links[n++]}>${contents}</a>`;
-    });
-  };
+    return result;
+  } else {
+    console.error(
+      `${chalk.bold.red('Missing translation for')} ${chalk.bold.yellow(str)}`
+    );
+    return `[ ${str} ]`;
+  }
+};
+
+const _l = (str, params, links) => {
+  str = _(str, params);
+  let n = 0;
+  return str.replace(/\[\[(.+?)\]\]/g, function (match, contents) {
+    return `<a ${links[n++]}>${contents}</a>`;
+  });
+};
 // i18n END
 
 const commonConfig = merge([
@@ -117,9 +121,7 @@ const commonConfig = merge([
   {
     entry: {
       homePage: `${parts.path.resolve(__dirname)}/src/assets/ts/pages/index.ts`,
-      aboutPage: `${parts.path.resolve(
-        __dirname
-      )}/src/assets/ts/pages/about.js`,
+      aboutPage: `${parts.path.resolve(__dirname)}/src/assets/ts/pages/about.js`,
     },
 
     target: ['web', 'es6'],
@@ -135,7 +137,8 @@ const commonConfig = merge([
         filename: `index-${LANG}.html`,
         chunks: ['homePage'],
         // template: './src/pages/index.pug',
-        template: './src/pages/index.html',
+        // template: './src/pages/index.html',
+        template: './src/pages/index.ejs',
         inject: 'head',
         meta: defaultMeta,
         alwaysWriteToDisk: true,
@@ -174,8 +177,8 @@ const commonConfig = merge([
 
 const productionConfig = merge([
   parts.loadOptimization(),
-  parts.extractCSS(),
   parts.generateSourceMaps({ type: 'nosources-source-map' }),
+  parts.extractCSS(),
   parts.attachRevision(),
   parts.loadOutput(),
   {
@@ -199,12 +202,11 @@ const developmentConfig = merge([
   parts.loadCSS(),
 ]);
 
-module.exports = (mode: any) => {
-  if (mode) {
-    if (mode.prod) {
-      return merge(commonConfig, productionConfig, { mode });
-    } else {
-      return merge(commonConfig, developmentConfig, { mode });
-    }
+export default (env, argv) => {
+  const mode = argv.mode || 'development';
+  if (mode === 'production') {
+    return merge(commonConfig, productionConfig, { mode });
+  } else {
+    return merge(commonConfig, developmentConfig, { mode });
   }
 };

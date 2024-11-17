@@ -1,7 +1,7 @@
 {
     "watch": [
-        "webpack.config.ts",
-        "webpack.parts.ts",
+        "webpack.config.js",
+        "webpack.parts.js",
         "i18n/**/*"
     ],
     "ext": "json, po"
