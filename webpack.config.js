@@ -15,17 +15,19 @@ import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
 import HtmlWebpackHarddiskPlugin from 'html-webpack-harddisk-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import Dotenv from 'dotenv-webpack';
+import WebpackShellPluginNext from 'webpack-shell-plugin-next';
 
 import FS from 'fs';
 import MessageFormat from '@messageformat/core';
 
 import chalk from 'chalk';
-
 import * as parts from './webpack.parts.js';
 
 // i18n START
 
 const LANG = parts.EnvCheckerPlugin.findParam('lang');
+const GIT_INFO = parts.EnvCheckerPlugin.findParam('gitInfo');
+
 const EscStr = '&-p-&';
 let i18n = {};
 if (LANG) {
@@ -152,7 +154,7 @@ const commonConfig = merge([
       new HtmlWebPackPlugin({
         filename: `about-${LANG}.html`,
         chunks: ['aboutPage'],
-        template: './src/pages/about.html',
+        template: './src/pages/about.ejs',
         inject: 'head',
         meta: defaultMeta,
         alwaysWriteToDisk: true,
@@ -190,6 +192,59 @@ const productionConfig = merge([
   },
 ]);
 
+const repoConfig = merge([
+  {
+    plugins: [
+      new WebpackShellPluginNext({
+        onBuildEnd:{
+          scripts: [
+            async () => {
+              const gitData = {
+                branch: '',
+                repo: '',
+              };
+
+              const branch = await parts.getBranch();
+              const repo = await parts.getRepo();
+              const srcFiles = parts.getAllFiles('public', []);
+              const htmlRegExp = /(.)*\.html/;
+
+              const htmlFiles = srcFiles.filter((file) => file.match(htmlRegExp));
+
+              if (branch && typeof branch === 'string') {
+                gitData.branch = branch;
+              }
+
+              if (repo && typeof repo === 'string') {
+                gitData.repo = repo.split(':')[1];
+              }
+
+              htmlFiles.forEach((file) => {
+
+                FS.readFile(file, 'utf8', function (err, data) {
+                  if (err) {
+                    return console.log(err);
+                  }
+                 const comment = `\n<!-- git: ${gitData.branch}, ${gitData.repo} -->\n`;
+
+                 data = data.replace(comment, '');
+                 const result = data.replace(/<\/body>/, `${comment}</body>`);
+              
+                  FS.writeFile(file, result, 'utf8', (err) => {
+                     if (err) return console.log(err);
+                  });
+                });
+              });
+            },
+          ],
+          blocking: true,
+          parallel: false
+        }
+      }),
+    ],
+  },
+]);
+
 const developmentConfig = merge([
   parts.loadOutput('[name].[fullhash].js'),
   parts.devServer({
@@ -204,8 +259,19 @@ const developmentConfig = merge([
 
 export default (env, argv) => {
   const mode = argv.mode || 'development';
+
+  const addGitInfo = env.addGitInfo === 'true'; // Konwertuj na boolean
+
+  console.log('addGitInfo: ', addGitInfo, GIT_INFO)
+
   if (mode === 'production') {
-    return merge(commonConfig, productionConfig, { mode });
+    const config = merge(commonConfig, productionConfig, { mode });
+  
+    if (GIT_INFO !== null) {
+      return merge(config, repoConfig, { mode });
+    }
+
+    return config
   } else {
     return merge(commonConfig, developmentConfig, { mode });
   }

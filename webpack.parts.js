@@ -15,12 +15,51 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
 import path from 'path';
 import chalk from 'chalk';
+import FS from 'fs';
 
 import * as sass from 'sass';
 
 export { path };
 
 const APP_SOURCE = path.join(__dirname, 'src');
+
+import { exec } from 'child_process';
+
+// Funkcja do pobierania aktualnej gałęzi
+export const getBranch = () => new Promise((resolve, reject) => {
+  exec('git branch --show-current', (err, stdout) => {
+    if (err) {
+      reject(`getBranch Error: ${err}`);
+    } else {
+      resolve(stdout.trim());
+    }
+  });
+});
+
+// Funkcja do pobierania repozytorium
+export const getRepo = () => new Promise((resolve, reject) => {
+  exec('git config --get remote.origin.url', (err, stdout) => {
+    if (err) {
+      reject(`getRepo Error: ${err}`);
+    } else {
+      resolve(stdout.trim());
+    }
+  });
+});
+
+// Funkcja do pobierania wszystkich plików w katalogu
+export const getAllFiles = function(dirPath, arrayOfFiles) {
+  const files = FS.readdirSync(dirPath);
+  arrayOfFiles = arrayOfFiles || [];
+  files.forEach((file) => {
+    if (FS.statSync(`${dirPath}/${file}`).isDirectory()) {
+      arrayOfFiles = getAllFiles(`${dirPath}/${file}`, arrayOfFiles);
+    } else {
+      arrayOfFiles.push(path.join(dirPath, file));
+    }
+  });
+  return arrayOfFiles;
+};
 
 export const loadOptimization = () => ({
   optimization: {
@@ -57,7 +96,7 @@ export const loadHTML = () => ({
   module: {
     rules: [
       {
-        test: /\.(html)$/i,
+        test: /\.(html|ejs)$/i,
         loader: 'html-loader',
         options: {
           esModule: false,
@@ -65,6 +104,11 @@ export const loadHTML = () => ({
             list: [
               // All default supported tags and attributes
               '...',
+              {
+                tag: 'img',
+                attribute: 'src',
+                type: 'src',
+              },
               {
                 tag: 'div',
                 attribute: 'data-src',
@@ -221,7 +265,19 @@ export const loadImages = () => ({
       {
         test: /\.(gif|png|jpe?g)$/i,
         type: 'asset/resource',
+        generator: {
+          filename: 'assets/images/[name].[contenthash][ext]', // Dodanie hasha
+        },
+        // dependency: { not: ['url'] },
         use: [
+          // {
+          //   loader: 'file-loader',
+          //   options: {
+          //     // publicPath: mode.prod ? IMAGE_PATH : '',
+          //     // outputPath: mode.prod ? IMAGE_PATH : '',
+          //     name: '[name].[ext]',
+          //   },
+          // },
           {
             loader: 'image-webpack-loader',
             options: {
@@ -251,7 +307,19 @@ export const loadImages = () => ({
       {
         test: /\.svg$/,
         type: 'asset/resource',
+        generator: {
+          filename: 'assets/images/[name].[contenthash][ext]', // Dodanie hasha
+        },
+        // dependency: { not: ['url'] },
         use: [
+          // {
+          //   loader: 'file-loader',
+          //   options: {
+          //     // publicPath: mode.prod ? IMAGE_PATH : '',
+          //     // outputPath: mode.prod ? IMAGE_PATH : '',
+          //     name: '[name].[ext]',
+          //   },
+          // },
           {
             loader: 'svgo-loader',
             options: {
