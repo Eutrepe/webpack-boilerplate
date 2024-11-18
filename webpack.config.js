@@ -23,6 +23,7 @@ import * as cheerio from 'cheerio';
 
 import chalk from 'chalk';
 import * as parts from './webpack.parts.js';
+import { renderTemplate } from './custom-ejs-engine.js';
 
 // i18n START
 
@@ -147,6 +148,12 @@ const commonConfig = merge([
         meta: defaultMeta,
         alwaysWriteToDisk: true,
         scriptLoading: 'defer',
+        templateContent: ({ htmlWebpackPlugin }) =>
+          renderTemplate('./src/pages/index.ejs', {
+            lang: LANG,
+            _: _,
+            _l: _l,
+          }),
         templateParameters: {
           lang: LANG,
           _: _,
@@ -161,6 +168,12 @@ const commonConfig = merge([
         meta: defaultMeta,
         alwaysWriteToDisk: true,
         scriptLoading: 'defer',
+        templateContent: ({ htmlWebpackPlugin }) =>
+          renderTemplate('./src/pages/about.ejs', {
+            lang: LANG,
+            _: _,
+            _l: _l,
+          }),
         templateParameters: {
           lang: LANG,
           _: _,
