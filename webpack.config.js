@@ -19,6 +19,7 @@ import WebpackShellPluginNext from 'webpack-shell-plugin-next';
 
 import FS from 'fs';
 import MessageFormat from '@messageformat/core';
+import * as cheerio from 'cheerio';
 
 import chalk from 'chalk';
 import * as parts from './webpack.parts.js';
@@ -27,6 +28,7 @@ import * as parts from './webpack.parts.js';
 
 const LANG = parts.EnvCheckerPlugin.findParam('lang');
 const GIT_INFO = parts.EnvCheckerPlugin.findParam('gitInfo');
+const EXTRACT_BODY = parts.EnvCheckerPlugin.findParam('extractBody');
 
 const EscStr = '&-p-&';
 let i18n = {};
@@ -43,7 +45,7 @@ if (LANG) {
     } catch (e) {
       if (e.code === 'ENOENT') {
         console.error(
-          `${chalk.bold.red('Missing vars file:')} ${chalk.bold.yellow(varsFile)}`
+          `${chalk.bold.red('Missing vars file:')} ${chalk.bold.yellow(varsFile)}`,
         );
       }
     }
@@ -52,7 +54,7 @@ if (LANG) {
     const { parsePo } = gettextToMessageFormat.default;
 
     const { headers, pluralFunction, translations } = parsePo(
-      po.replace(/%(?![s|n|1])/g, EscStr)
+      po.replace(/%(?![s|n|1])/g, EscStr),
     );
     const mf = new MessageFormat(LANG, {
       customFormatters: { [headers.language]: pluralFunction },
@@ -65,7 +67,7 @@ if (LANG) {
     console.error(e);
     if (e.code === 'ENOENT') {
       console.error(
-        `${chalk.bold.red('Missing translation file:')} ${chalk.bold.yellow(poFile)}`
+        `${chalk.bold.red('Missing translation file:')} ${chalk.bold.yellow(poFile)}`,
       );
     }
   }
@@ -95,7 +97,7 @@ const _ = (str, params) => {
     return result;
   } else {
     console.error(
-      `${chalk.bold.red('Missing translation for')} ${chalk.bold.yellow(str)}`
+      `${chalk.bold.red('Missing translation for')} ${chalk.bold.yellow(str)}`,
     );
     return `[ ${str} ]`;
   }
@@ -192,11 +194,11 @@ const productionConfig = merge([
   },
 ]);
 
-const repoConfig = merge([
+const htmlFileContentConfig = merge([
   {
     plugins: [
       new WebpackShellPluginNext({
-        onBuildEnd:{
+        onBuildEnd: {
           scripts: [
             async () => {
               const gitData = {
@@ -209,7 +211,9 @@ const repoConfig = merge([
               const srcFiles = parts.getAllFiles('public', []);
               const htmlRegExp = /(.)*\.html/;
 
-              const htmlFiles = srcFiles.filter((file) => file.match(htmlRegExp));
+              const htmlFiles = srcFiles.filter((file) =>
+                file.match(htmlRegExp),
+              );
 
               if (branch && typeof branch === 'string') {
                 gitData.branch = branch;
@@ -219,27 +223,36 @@ const repoConfig = merge([
                 gitData.repo = repo.split(':')[1];
               }
 
-              htmlFiles.forEach((file) => {
+              for (const file of htmlFiles) {
+                try {
+                  const data = FS.readFileSync(file, 'utf8');
+                  const $ = cheerio.load(data);
+                  const comment = `\n<!-- git: ${gitData.branch}, ${gitData.repo} -->\n`;
 
-                FS.readFile(file, 'utf8', function (err, data) {
-                  if (err) {
-                    return console.log(err);
+                  if (EXTRACT_BODY !== null && GIT_INFO === null) {
+                    const bodyContent = $('body').html();
+                    FS.writeFileSync(file, bodyContent, 'utf8');
                   }
-                 const comment = `\n<!-- git: ${gitData.branch}, ${gitData.repo} -->\n`;
 
-                 data = data.replace(comment, '');
-                 const result = data.replace(/<\/body>/, `${comment}</body>`);
-              
-                  FS.writeFile(file, result, 'utf8', (err) => {
-                     if (err) return console.log(err);
-                  });
-                });
-              });
+                  if (EXTRACT_BODY === null && GIT_INFO !== null) {
+                    $('body').append(`\n${comment}\n`);
+                    FS.writeFileSync(file, $.html(), 'utf8');
+                  }
+
+                  if (EXTRACT_BODY !== null && GIT_INFO !== null) {
+                    const bodyContent = $('body').html();
+                    const finalContent = bodyContent + comment;
+                    FS.writeFileSync(file, finalContent, 'utf8');
+                  }
+                } catch (err) {
+                  console.error(`Error processing file ${file}:`, err);
+                }
+              }
             },
           ],
           blocking: true,
-          parallel: false
-        }
+          parallel: false,
+        },
       }),
     ],
   },
@@ -260,18 +273,16 @@ const developmentConfig = merge([
 export default (env, argv) => {
   const mode = argv.mode || 'development';
 
-  const addGitInfo = env.addGitInfo === 'true'; // Konwertuj na boolean
-
-  console.log('addGitInfo: ', addGitInfo, GIT_INFO)
+  // const addGitInfo = env.addGitInfo === 'true'; // Konwertuj na boolean
 
   if (mode === 'production') {
     const config = merge(commonConfig, productionConfig, { mode });
-  
-    if (GIT_INFO !== null) {
-      return merge(config, repoConfig, { mode });
+
+    if (GIT_INFO !== null || EXTRACT_BODY !== null) {
+      return merge(config, htmlFileContentConfig, { mode });
     }
 
-    return config
+    return config;
   } else {
     return merge(commonConfig, developmentConfig, { mode });
   }
