@@ -1,46 +1,46 @@
 <!DOCTYPE html>
 <html lang="pl-PL">
-  <head>
-    <title>Home</title>
-  </head>
 
-  <body class="no-animation">
-    <div class="page-wrapper">
-      <h1>About</h1>
-      <hr />
-      <a href="index.html">Go to home page</a>
-      <hr />
-      <!-- <img src="../assets/images/svg.svg" alt="" />
+<head>
+  <title>Home</title>
+</head>
+
+<body class="no-animation">
+  <div class="page-wrapper">
+    <h1>About</h1>
+    <hr />
+    <a href="index.html">Go to home page</a>
+    <hr />
+    <!-- <img src="../assets/images/svg.svg" alt="" />
       <img src="../assets/images/gif.gif" alt="" />
       <img src="../assets/images/png.png" alt="" />
       <img src="../assets/images/jpg.jpg" alt="" /> -->
 
+    <p>{{ 'Hello, World!' }}</p>
 
-      [[ if ( ['en', 'pl'].includes(lang) ) { ]]
-        test lang
-      [[ } ]]
+    [[ if ( ['en', 'pl'].includes(lang) ) { ]]
+    test lang
+    [[ } ]]
 
 
-      <img src="{{ require('../assets/images/svg.svg') }}" alt="" />
-      <img src="{{ require('../assets/images/gif.gif') }}" alt="" />
+    <img src="{{ require('../assets/images/svg.svg') }}" alt="" />
+    <img src="{{ require('../assets/images/gif.gif') }}" alt="" />
+    <img src="{{ require('../assets/images/png.png') }}" alt="" />
+    <img src="{{ require('../assets/images/jpg.jpg') }}" alt="" />
+
+    <a class="hash-this" href="{{ require('../assets/images/png.png') }}">aaaaa</a>
+
+    <object data="{{ require('../assets/images/png.png') }}" width="300" height="150"></object>
+
+    <picture>
+      <source srcset="{{ require('../assets/images/jpg.jpg') }}" media="(min-width: 675px)" />
       <img src="{{ require('../assets/images/png.png') }}" alt="" />
-      <img src="{{ require('../assets/images/jpg.jpg') }}" alt="" />
+    </picture>
 
-      <a class="hash-this" href="{{ require('../assets/images/png.png') }}">aaaaa</a>
+    <div data-src="{{ require('../assets/images/png.png') }}"></div>
+    <hr />
+    <img id="testImage" alt="" />
+  </div>
+</body>
 
-      <object data="{{ require('../assets/images/png.png') }}" width="300" height="150"></object>
-
-      <picture>
-        <source
-          srcset="{{ require('../assets/images/jpg.jpg') }}"
-          media="(min-width: 675px)"
-        />
-        <img src="{{ require('../assets/images/png.png') }}" alt="" />
-      </picture>
-
-      <div data-src="{{ require('../assets/images/png.png') }}"></div>
-      <hr />
-      <img id="testImage" alt="" />
-    </div>
-  </body>
 </html>

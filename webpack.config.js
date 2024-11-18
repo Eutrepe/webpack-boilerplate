@@ -20,6 +20,7 @@ import WebpackShellPluginNext from 'webpack-shell-plugin-next';
 import FS from 'fs';
 import MessageFormat from '@messageformat/core';
 import * as cheerio from 'cheerio';
+import { renderTemplate } from './custom-ejs-engine.js';
 
 import chalk from 'chalk';
 import * as parts from './webpack.parts.js';
@@ -159,6 +160,12 @@ const commonConfig = merge([
         meta: defaultMeta,
         alwaysWriteToDisk: true,
         scriptLoading: 'defer',
+        // templateContent: ({ htmlWebpackPlugin }) =>
+        //   renderTemplate('./src/pages/about.ejs', {
+        //     lang: LANG,
+        //     _: _,
+        //     _l: _l,
+        //   }),
         templateParameters: {
           lang: LANG,
           _: _,
