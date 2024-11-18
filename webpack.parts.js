@@ -26,31 +26,29 @@ const APP_SOURCE = path.join(__dirname, 'src');
 import { exec } from 'child_process';
 
 // Funkcja do pobierania aktualnej gałęzi
-export const getBranch = () =>
-  new Promise((resolve, reject) => {
-    exec('git branch --show-current', (err, stdout) => {
-      if (err) {
-        reject(`getBranch Error: ${err}`);
-      } else {
-        resolve(stdout.trim());
-      }
-    });
+export const getBranch = () => new Promise((resolve, reject) => {
+  exec('git branch --show-current', (err, stdout) => {
+    if (err) {
+      reject(`getBranch Error: ${err}`);
+    } else {
+      resolve(stdout.trim());
+    }
   });
+});
 
 // Funkcja do pobierania repozytorium
-export const getRepo = () =>
-  new Promise((resolve, reject) => {
-    exec('git config --get remote.origin.url', (err, stdout) => {
-      if (err) {
-        reject(`getRepo Error: ${err}`);
-      } else {
-        resolve(stdout.trim());
-      }
-    });
+export const getRepo = () => new Promise((resolve, reject) => {
+  exec('git config --get remote.origin.url', (err, stdout) => {
+    if (err) {
+      reject(`getRepo Error: ${err}`);
+    } else {
+      resolve(stdout.trim());
+    }
   });
+});
 
 // Funkcja do pobierania wszystkich plików w katalogu
-export const getAllFiles = function (dirPath, arrayOfFiles) {
+export const getAllFiles = function(dirPath, arrayOfFiles) {
   const files = FS.readdirSync(dirPath);
   arrayOfFiles = arrayOfFiles || [];
   files.forEach((file) => {
@@ -84,7 +82,7 @@ export const loadOptimization = () => ({
 
 export const loadOutput = (
   filename = '[name].[contenthash].js',
-  outputDir = './public',
+  outputDir = './public'
 ) => ({
   output: {
     path: path.resolve(__dirname, outputDir),
@@ -98,7 +96,20 @@ export const loadHTML = () => ({
   module: {
     rules: [
       {
-        test: /\.(html|ejs)$/i,
+        test: /\.ejs$/i, // Reguła dla plików EJS
+        use: [
+          {
+            loader: 'ejs-loader',
+            options: {
+              esModule: false,
+              interpolate: '\\{\\{\\s+?(.+?)\\s+?\\}\\}', // Opcjonalne ustawienia
+              evaluate: '\\[\\[\\s+?(.+?)\\s+?\\]\\]',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.html$/i, // Reguła dla plików HTML
         use: [
           {
             loader: 'html-loader',
@@ -106,7 +117,6 @@ export const loadHTML = () => ({
               esModule: false,
               sources: {
                 list: [
-                  // All default supported tags and attributes
                   '...',
                   {
                     tag: 'img',
@@ -124,7 +134,7 @@ export const loadHTML = () => ({
                     type: 'src',
                     filter: (tag, attribute, attributes, resourcePath) => {
                       let result = false;
-                      // Add hash to <a> tag only if it has class 'hash-this'
+                      // Dodaj hash do tagu <a> tylko jeśli ma klasę 'hash-this'
                       for (const attr of attributes) {
                         if (
                           attr.name === 'class' &&
@@ -187,7 +197,7 @@ export const loadCSS = () => ({
             loader: 'sass-loader',
             options: {
               sourceMap: true,
-              implementation: sass,
+              implementation: sass
             },
           },
         ],
@@ -229,7 +239,7 @@ export const extractCSS = () => {
               loader: 'sass-loader',
               options: {
                 sourceMap: true,
-                implementation: sass,
+                implementation: sass
               },
             },
           ],
@@ -402,11 +412,7 @@ export const loadFonts = () => ({
   },
 });
 
-export const devServer = ({
-  host = 'localhost',
-  port = '8080',
-  open = true,
-} = {}) => ({
+export const devServer = ({ host = 'localhost', port = '8080', open = true } = {}) => ({
   devServer: {
     host: host, // Defaults to `localhost`
     port: port, // Defaults to 8080
@@ -436,7 +442,7 @@ export const generateSourceMaps = ({ type = 'source-map' } = {}) => ({
 export class EnvCheckerPlugin {
   static findParam(param) {
     let result = null;
-    process.argv.forEach((argv) => {
+    process.argv.forEach(argv => {
       if (argv.indexOf(param) === -1) return;
       result = argv.split('=')[1];
     });
@@ -459,11 +465,9 @@ export class EnvCheckerPlugin {
             throw new Error(
               `${chalk.red(`\n\nThe given`)} ${chalk.yellow(env)} ${chalk.red('value (')}` +
                 `${chalk.yellow(paramVal)}${chalk.red(`) is not supported.\n\n`)}` +
-                chalk.bold.red(
-                  `Please set a value that matches the expression `,
-                ) +
+                chalk.bold.red(`Please set a value that matches the expression `) +
                 chalk.cyan(value.source) +
-                chalk.bold.red(` and try re-running the build.\n`),
+                chalk.bold.red(` and try re-running the build.\n`)
             );
           }
         }
@@ -472,7 +476,7 @@ export class EnvCheckerPlugin {
         throw new Error(
           chalk.bold.red('\n\nPlease set the following parameters:\n\n') +
             chalk.yellow(`  • ${missingEnvVars.join('\n\n  • ')}\n\n`) +
-            chalk.bold.red(`Then, try re-running the build.\n`),
+            chalk.bold.red(`Then, try re-running the build.\n`)
         );
       }
     });
