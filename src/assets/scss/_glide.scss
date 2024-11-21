@@ -1,9 +1,9 @@
-@use '../mixins/medias';
+@use 'mixins/medias';
 
 .glide {
   .glide__arrow {
     position: absolute;
-    background-color: var(--white);
+    background-color: #ffffff;
     background-image: none;
     display: block;
     opacity: 0.8;
@@ -13,16 +13,6 @@
     transition: opacity 0.3s linear;
     cursor: pointer;
     font-size: 20px;
-    top: 30%;
-
-    @include medias.xs-min {
-      top: 50%;
-    }
-
-    @include medias.md-min {
-      width: 74px;
-      height: 74px;
-    }
 
     &:hover {
       opacity: 1;
@@ -38,12 +28,8 @@
       transform: rotate(45deg);
       margin-top: 2.5px;
       border-style: solid;
-      border-color: var(--blue);
+      border-color: var(--dark2);
       border-width: 0;
-
-      @include medias.md-min {
-        top: 24px;
-      }
     }
   }
 
@@ -54,10 +40,6 @@
       left: 19px;
       border-bottom-width: 1px;
       border-left-width: 1px;
-
-      @include medias.md-min {
-        left: 31px;
-      }
     }
   }
 
@@ -68,10 +50,6 @@
       right: 19px;
       border-top-width: 1px;
       border-right-width: 1px;
-
-      @include medias.md-min {
-        right: 30px;
-      }
     }
   }
 }

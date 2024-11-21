@@ -1,4 +1,9 @@
-import '../../scss/style.scss';
+import '../../scss/critical.scss';
+
+// Dynamicznie importuj niekrytyczne style
+import(/* webpackChunkName: "styles" */ '../../scss/style.scss').then(() => {
+  // Style zostały załadowane
+});
 
 import '../polyfiles';
 import { domReady, throttle } from '../helpers';

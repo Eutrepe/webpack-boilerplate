@@ -197,7 +197,10 @@ export const loadCSS = () => ({
             loader: 'sass-loader',
             options: {
               sourceMap: true,
-              implementation: sass
+              implementation: sass,
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, 'node_modules')],
+              },
             },
           },
         ],
@@ -239,7 +242,10 @@ export const extractCSS = () => {
               loader: 'sass-loader',
               options: {
                 sourceMap: true,
-                implementation: sass
+                implementation: sass,
+                sassOptions: {
+                  includePaths: [path.resolve(__dirname, 'node_modules')],
+                },
               },
             },
           ],
