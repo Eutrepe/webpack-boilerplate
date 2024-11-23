@@ -11,8 +11,7 @@ import { initMobile } from '../mobile-nav';
 import { Carousel } from '../plugins/carousel/carousel';
 import { Counter } from '../plugins/counter/counter';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Glide = require('@glidejs/glide').default;
+import Glide from '@glidejs/glide';
 
 let BODY: HTMLElement | null = null;
 

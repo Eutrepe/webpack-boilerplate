@@ -51,8 +51,8 @@
     "@fast-csv/parse": "^5.0.2",
     "@messageformat/core": "^3.4.0",
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.9",
-    "@typescript-eslint/eslint-plugin": "^8.14.0",
-    "@typescript-eslint/parser": "^8.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
     "babel-loader": "^9.2.1",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "chalk": "^5.3.0",
@@ -93,7 +93,7 @@
     "svgo": "^3.3.2",
     "svgo-loader": "^4.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
+    "typescript": "^5.7.2",
     "webpack": "^5.96.1",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^5.1.4",
@@ -102,7 +102,7 @@
     "webpack-shell-plugin-next": "^2.3.2"
   },
   "dependencies": {
-    "@glidejs/glide": "^3.6.2",
+    "@glidejs/glide": "^3.7.1",
     "core-js": "^3.39.0",
     "intersection-observer": "^0.12.2",
     "regenerator-runtime": "^0.14.1"
