@@ -3,11 +3,18 @@
     [
       "@babel/preset-env",
       {
-        "corejs" : {
-          "version" : "3",
-          "proposals" : true
+        "useBuiltIns": "usage",
+        "corejs": {
+          "version": 3,
+          "proposals": true
         },
-        "useBuiltIns": "usage"
+        "targets": {
+          "chrome": "73",
+          "firefox": "67",
+          "edge": "79",
+          "safari": "12"
+        },
+        "modules": false
       }
     ],
     "@babel/preset-typescript"

@@ -129,7 +129,7 @@ const commonConfig = merge([
       aboutPage: `${parts.path.resolve(__dirname)}/src/assets/ts/pages/about.js`,
     },
 
-    target: ['web', 'es6'],
+    target: ['web', 'es2019'],
     resolve: {
       extensions: ['.ts', '.js'],
     },

@@ -154,7 +154,7 @@ const commonConfig = (mode: any) => merge([
       // localization: `${parts.path.resolve(__dirname)}/src/assets/js/localization.ts`,
     },
 
-    target: ['web', 'es5'],
+    target: ['web', 'es2019'],
 
     resolve: {
       extensions: ['.ts', '.js'],
