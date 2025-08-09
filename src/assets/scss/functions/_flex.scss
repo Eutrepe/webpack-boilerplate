@@ -1,0 +1,33 @@
+// Generowanie klas display: flex
+@mixin flex-utilities($breakpoint: null) {
+    $class-prefix: "";
+    @if $breakpoint {
+      $class-prefix: "d-flex-#{$breakpoint}";
+      @include media-breakpoint-up($breakpoint) {
+        .#{$class-prefix} {
+          display: flex;
+        }
+      }
+    } @else {
+      $class-prefix: "d-flex";
+      .#{$class-prefix} {
+        display: flex;
+      }
+    }
+    
+    // Klasy pomocnicze dla justify-content
+    @each $justify in (start, end, center, between, around, evenly) {
+      $justify-class: "justify-content-#{$justify}";
+      .#{$class-prefix}.#{$justify-class} {
+        justify-content: #{$justify};
+      }
+    }
+  
+    // Klasy pomocnicze dla align-items
+    @each $align in (start, end, center, baseline, stretch) {
+      $align-class: "align-items-#{$align}";
+      .#{$class-prefix}.#{$align-class} {
+        align-items: #{$align};
+      }
+    }
+  }

@@ -1,0 +1,25 @@
+@use '../mixins/medias';
+
+.glide {
+  will-change: transform;
+  cursor: default;
+
+  &__slide {
+    text-align: center;
+
+    img {
+      margin: 0 auto;
+    }
+  }
+
+  &__wrapper {
+    overflow: hidden;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 20%,
+      black 80%,
+      transparent
+    );
+  }
+}

@@ -1,15 +1,22 @@
-- var pageTitle = 'test title'
+extends layouts/main
 
+prepend head 
+  title= _t('INDEX.page.title')
+  meta(name="description" content=_t('INDEX.page.description'))
+  link(rel="canonical" href="https://example.pl")
+  link(rel="alternate" hreflang="pl" href="https://example.pl")
+  link(rel="alternate" hreflang="en" href="https://example.en")
+  //- meta(name="keywords" content=_('INDEX.page.keywords'))
 
-doctype html
-html(lang="en")
-  head
-    title= pageTitle
-    script(type='text/javascript').
-      console.log('test')
-  body
-    include includes/test.pug
-    h1 Pug - node template engine
-    p= _('test')
-    include includes/test.pug
-
+block content
+  main#main
+   .container 
+    .ds-frame
+      .ds-frame__content
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, odit voluptatibus! Voluptatibus impedit fugit a, modi animi fugiat consectetur exercitationem commodi, accusamus inventore nemo iusto provident quibusdam, ipsam et corporis maiores veniam adipisci harum similique aliquid eum! Quas doloremque quae rerum sunt unde ipsam eius nostrum earum laborum accusantium laboriosam temporibus impedit, animi minus quaerat voluptate? Ex laboriosam molestias voluptatem. Aliquam aspernatur voluptatibus accusamus ratione! Quod, autem reprehenderit facere ad aliquid nisi, quae magni inventore harum sed optio suscipit atque, illum odio mollitia aspernatur accusamus. Itaque expedita nisi dolorem. Perspiciatis eveniet incidunt beatae quis odio natus reiciendis facere doloremque minus!
+      .ds-frame__container
+          .ds-frame__decoration(data-frame)
+   
+    .container 
+      .marquee-slider__wrapper
+            include ./partials/clients

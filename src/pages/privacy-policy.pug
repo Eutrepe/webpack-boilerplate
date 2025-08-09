@@ -1,0 +1,15 @@
+
+extends layouts/main
+
+prepend head 
+  title Polityka Prywatności
+  meta(name="description" content=_t('INDEX.page.description'))
+  link(rel="canonical" href="https://example.pl/polityka-prywatnosci.html")
+  link(rel="alternate" hreflang="pl" href="https://example.pl/polityka-prywatnosci.html")
+  link(rel="alternate" hreflang="en" href="https://example.en/privacy-policy.html")
+  //- meta(name="keywords" content=_('INDEX.page.keywords'))
+
+block content
+  main#main
+    .container
+      h1.text-center Polityka prywatności 

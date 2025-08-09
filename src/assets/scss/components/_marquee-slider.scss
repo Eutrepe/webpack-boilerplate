@@ -1,0 +1,74 @@
+@use '../mixins/medias';
+
+.marquee-slider {
+  --gap: 60px;
+  --duration: 20s;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: var(--gap);
+  overflow: hidden;
+  background-color: #fff;
+
+  // &:hover {
+  //   .marquee-slider {
+  //     &__track {
+  //       animation-play-state: paused;
+  //     }
+  //   }
+  // }
+
+  &__wrapper {
+    overflow: hidden;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 20%,
+      black 80%,
+      transparent
+    );
+
+    &.with-3d {
+      perspective: 1200px;
+    }
+  }
+
+  &__track {
+    display: flex;
+    gap: var(--gap);
+    // min-width: 600%;
+    justify-content: flex-start;
+    animation: scroll var(--duration) linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
+    width: var(calc(1px * var(--width)));
+
+    li {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+      justify-content: center;
+
+      img {
+        max-height: 50px;
+        flex: 0 0 auto;
+      }
+    }
+  }
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-1 * (var(--width)) - var(--gap)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-slider__track {
+    animation: none;
+  }
+}

@@ -285,7 +285,7 @@ export const loadImages = () => ({
   module: {
     rules: [
       {
-        test: /\.(gif|png|jpe?g)$/i,
+        test: /\.(gif|png|jpe?g|webp)$/i,
         type: 'asset/resource',
         generator: {
           filename: 'assets/images/[name].[contenthash][ext]', // Dodanie hasha

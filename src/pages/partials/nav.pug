@@ -1,0 +1,55 @@
+ul.navbar__links(role="menubar", aria-orientation="horizontal")
+    li.navbar__item.navbar__dropdown(role="none")
+        button.navbar__link.navbar__dropdown-toggle(
+            type="button"
+            role="menuitem"
+            aria-haspopup="true"
+            aria-controls="submenu-services"
+            aria-expanded="false")=_t('MENU.services')
+                svg.navigation__caret(aria-hidden="true", xmlns="http://www.w3.org/2000/svg" width="9.88" height="11.59" viewBox="0 0 9.88 11.59")
+                    path(id="ic_arrow_back_24px" d="M15.59,8.322H6.177L9.355,4.871,8.548,4,4,8.94l4.548,4.94.8-.871L6.177,9.557H15.59Z" transform="translate(-4 15.59) rotate(-90)" fill="#fff")
+        ul#submenu-services.navigation__submenu(role="menu" hidden)
+            li(role="none")
+                a(href="#" role="menuitem") xyz
+            li(role="none")
+                a(href="#" role="menuitem") xyz dsdaddsaasd dsasdas dsds
+            li(role="none")
+                a(href="#" role="menuitem") xyz
+            li(role="none")
+                a(href="#" role="menuitem") xyz
+            li(role="none")
+                a(href="#" role="menuitem") xyz
+            li(role="none")
+                a(href="#" role="menuitem") xyz
+
+    li.navbar__item(role="none")
+        a.navbar__link(href="/case-studies" role="menuitem")= _t('MENU.case-studies')
+    li.navbar__item(role="none")
+        a.navbar__link(href="/about" role="menuitem")= _t('MENU.about')
+    li.navbar__item(role="none")
+        a.navbar__link(href="/blog" role="menuitem")= _t('MENU.blog')
+    li.navbar__item(role="none")
+        a.navbar__link(href="/contact" role="menuitem")= _t('MENU.contact')
+
+    li.navbar__item.navbar__item--lang(role="none")
+        button.lang__toggle(
+            type="button"
+            role="menuitem"
+            aria-haspopup="true"
+            aria-controls="lang-menu"
+            aria-expanded="false"
+            aria-label="Zmień język")
+            svg.icon.icon--globe(width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true")
+                circle(cx="12" cy="12" r="10")
+                path(d="M2 12h20")
+                path(d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z")
+            span.lang__current.sr-only Aktualny język: PL
+            | PL
+            svg.navigation__caret(aria-hidden="true", xmlns="http://www.w3.org/2000/svg" width="9.88" height="11.59" viewBox="0 0 9.88 11.59")
+                path(id="ic_arrow_back_24px" d="M15.59,8.322H6.177L9.355,4.871,8.548,4,4,8.94l4.548,4.94.8-.871L6.177,9.557H15.59Z" transform="translate(-4 15.59) rotate(-90)" fill="#fff")
+
+        ul#lang-menu.lang__menu(role="menu" hidden)
+            li(role="none")
+                a(href="/pl" role="menuitem")= _t('GLOBAL.langSwitcher.polish') 
+            li(role="none")
+                a(href="/en" role="menuitem" aria-current="page")= _t('GLOBAL.langSwitcher.english')

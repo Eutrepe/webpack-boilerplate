@@ -1,0 +1,14 @@
+// custom plugins
+// @use '../ts/plugins/carousel/carousel.scss';
+
+// components
+@use 'components/frame';
+@use 'components/marquee-slider';
+
+// plugins
+@import '@glidejs/glide/dist/css/glide.core.css';
+@import '@glidejs/glide/dist/css/glide.theme.css';
+
+main {
+  padding-top: 400px;
+}

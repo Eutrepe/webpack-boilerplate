@@ -1,0 +1,93 @@
+doctype html
+html(lang=lang)
+  head
+    block head
+
+        //- script. 
+        //-   window.dataLayer = window.dataLayer || [];
+        //-   function gtag(){dataLayer.push(arguments);}
+
+        //-   if (localStorage.getItem('consentMode') === null) {
+        //-     gtag('consent', 'default', {
+        //-       'ad_storage': 'denied',
+        //-       'analytics_storage': 'denied',
+        //-       'functionality_storage': 'denied',
+        //-       'personalization_storage': 'denied',
+        //-       'security_storage': 'granted',
+        //-     });
+        //-   } else {
+        //-     gtag('consent', 'default', JSON.parse(localStorage.getItem('consentMode')));
+        //-   }
+          
+        //- Google Tag Manager
+        script.
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-PRG7FMM');
+        //- End Google Tag Manager
+
+        link(rel="preconnect" href="https://fonts.googleapis.com")
+        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+        link(href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@300,300;0,400;0,500;0,600;1,500&display=swap" rel="stylesheet")
+
+        // Facebook Meta Tags
+        meta(property='og:url' content='https://example.pl')
+        meta(property='og:type' content='website')
+        meta(property='og:title' content='')
+        meta(property='og:description' content='')
+        //- meta(property='og:image' content=require('../assets/images/header-mini.jpg'))
+        // Twitter Meta Tags
+        meta(name='twitter:card' content='summary_large_image')
+        meta(property='twitter:domain' content='example.pl')
+        meta(property='twitter:url' content='https://example.pl')
+        meta(name='twitter:title' content='')
+        meta(name='twitter:description' content='')
+        //- meta(name='twitter:image' content=require('../assets/images/header-mini.jpg'))
+
+
+        //- link(
+        //-       rel="preload"
+        //-       as="image"
+        //-       href=require("../assets/images/header-desktop.webp")
+        //-       imagesrcset=`${require("../assets/images/header-desktop.webp")} 1200w, ${require("../assets/images/header-desktop@2x.webp")} 2400w`
+        //-       imagesizes="100vw"
+        //-       type="image/webp"
+        //-     )
+
+        meta(name="robots" content="noindex, nofollow")
+   
+        style(type="text/css").
+          body {
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+          }
+
+        //- no-JS fallback
+        noscript
+            style(type="text/css").
+              body {
+                opacity: 1;
+              }
+       
+        base(href='./')
+        meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=5')
+        meta(charset="UTF-8")
+        //- meta(name='google-site-verification' content='Zgr9Nwff628EKybDRJi4V3AMzqpS3Rv6aaKX4AXNcTg')
+
+        //- script(src="https://www.google.com/recaptcha/api.js" async defer)
+
+  body(class="no-animation")
+    //- Google Tag Manager (noscript)
+    //- noscript
+    //-     iframe(src="https://www.googletagmanager.com/ns.html?id=GTM-PRG7FMM"
+    //- height="0" width="0" style="display:none;visibility:hidden")
+    //- End Google Tag Manager (noscript)
+
+    include ../partials/desktop-navbar
+  
+    block content
+
+    include ../partials/mobile-navbar
+    include ../partials/footer

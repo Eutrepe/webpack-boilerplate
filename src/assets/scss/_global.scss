@@ -13,7 +13,7 @@ body {
   // overflow-x: hidden;
   -ms-overflow-style: scrollbar;
   -webkit-font-smoothing: antialiased;
-  background-color: var(--white);
+  background-color: var(--black);
 }
 
 body {
@@ -26,6 +26,30 @@ body {
   // hack for slider in iframe
   width: 1px;
   min-width: 100%;
+  font-family: var(--Poppins);
+  overscroll-behavior: none;
+}
+
+button,
+a,
+input,
+textarea,
+select,
+[type='button'],
+[role='button'],
+[role='link'],
+[role='menuitem'],
+[role='tab'],
+[tabindex]:not([tabindex='-1']) {
+  &:focus-visible {
+    outline: var(--focus-outline-width) solid var(--focus-outline-color);
+    outline-offset: var(--focus-outline-offset);
+    border-radius: 10px;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 a,
@@ -75,5 +99,44 @@ html {
     scroll-behavior: auto !important;
     transition-duration: 0s !important;
     transition-delay: 0s !important;
+  }
+}
+
+.container-fluid {
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
+  position: relative;
+}
+
+.short-container {
+  @extend .container-fluid;
+
+  max-width: 670px;
+  margin: 0 auto;
+}
+
+.container {
+  @extend .container-fluid;
+
+  @include medias.md-min {
+    max-width: 730px;
+    margin: 0 auto;
+  }
+
+  @include medias.lg-min {
+    max-width: 960px;
+  }
+
+  @include medias.xl-min {
+    max-width: 1170px;
+  }
+
+  @include medias.xxl-min {
+    max-width: 1330px;
+  }
+
+  @include medias.big-min {
+    max-width: 1540px;
   }
 }

@@ -1,0 +1,14 @@
+@use "breakpoints";
+
+// Mixin dla font-weight od 100 do 900
+@mixin generate-font-weight-helpers {
+  @for $i from 1 through 9 {
+    $weight: $i * 100;
+    // Klasa domyślna (globalna)
+    .font-weight-#{$weight} {
+      font-weight: $weight;
+    }
+    // Klasy z breakpointami
+    @include breakpoints.breakpoint-classes('font-weight', $weight, font-weight, $weight);
+  }
+}

@@ -1,0 +1,38 @@
+.mobile-navigation(data-navigation-mobile, aria-hidden="true", inert)
+    .mobile-navigation__header
+        a.navbar__logo(href="/" aria-label=_t('MOBILE_NAV.logo.ariaLabel'))
+            //- img(src=require('../assets/images/svg.svg') alt="logo")
+            | logo
+        button.mobile-navigation__close(data-navigation-close, aria-label=_t('MOBILE_NAV.close.ariaLabel')) 
+            svg(
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            )
+                line(
+                    x1="18"
+                    y1="6"
+                    x2="6"
+                    y2="18"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                )
+                line(
+                    x1="6"
+                    y1="6"
+                    x2="18"
+                    y2="18"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                )
+
+    .mobile-navigation__content
+        .mobile-navigation__body
+            include nav
+
+    .mobile-navigation__footer SOCIAL ICONS
+
+.mobile-navigation__overlay

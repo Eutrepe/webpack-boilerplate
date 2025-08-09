@@ -1,0 +1,11 @@
+@use 'variables';
+@use 'reset';
+@use 'fonts';
+@use 'helpers';
+@use 'global';
+
+@use 'components/navbar';
+
+.mobile-navigation {
+  display: none;
+}

@@ -1,0 +1,15 @@
+@use "breakpoints";
+
+$alignments: left, right, center, justify;
+
+// Mixin dla text-align
+@mixin generate-text-align-helpers {
+    @each $alignment in $alignments {
+      // Klasa domyślna (globalna)
+      .text-align-#{$alignment} {
+        text-align: $alignment;
+      }
+      // Klasy z breakpointami
+      @include breakpoints.breakpoint-classes('text-align', $alignment, text-align);
+    }
+  }

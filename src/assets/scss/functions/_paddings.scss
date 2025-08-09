@@ -1,0 +1,22 @@
+@use "sass:string";
+@use "breakpoints";
+
+// Mixin dla padding-top i padding-bottom od 0px do 200px z krokiem 10px
+@mixin generate-padding-helpers {
+  @for $i from 0 through 30 {
+    $spacing: $i * 10px;
+    $spacing-no-unit: string.slice(#{$spacing}, 1, -3); // Usuwa "px" z końca wartości
+    // Klasa domyślna (globalna) dla padding-top
+    .pt-#{$spacing-no-unit} {
+      padding-top: $spacing !important;
+    }
+    // Klasa domyślna (globalna) dla padding-bottom
+    .pb-#{$spacing-no-unit} {
+      padding-bottom: $spacing !important;
+    }
+    // Klasy z breakpointami dla padding-top
+    @include breakpoints.breakpoint-classes('pt', $spacing-no-unit, padding-top, $spacing);
+    // Klasy z breakpointami dla padding-bottom
+    @include breakpoints.breakpoint-classes('pb', $spacing-no-unit, padding-bottom, $spacing);
+  }
+}

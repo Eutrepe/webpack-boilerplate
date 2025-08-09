@@ -3,8 +3,13 @@ import { dirname } from 'path';
 
 // For ES Modules, __filename and __dirname are not defined by default.
 // Manually define them:
+
+import path from 'path';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+import webpack from 'webpack';
 
 import 'dotenv/config';
 import { merge } from 'webpack-merge';
@@ -16,20 +21,45 @@ import HtmlWebpackHarddiskPlugin from 'html-webpack-harddisk-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import Dotenv from 'dotenv-webpack';
 import WebpackShellPluginNext from 'webpack-shell-plugin-next';
+import { generateSitemap } from 'sitemap-ts';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 import FS from 'fs';
 import MessageFormat from '@messageformat/core';
 import * as cheerio from 'cheerio';
-import { renderTemplate } from './custom-ejs-engine.js';
+// import { renderTemplate } from './custom-ejs-engine.js';
 
 import chalk from 'chalk';
 import * as parts from './webpack.parts.js';
+import { type } from 'os';
+
+const generateDynamicRoutes = (lang) => {
+  const routes = [];
+
+  for (const page in pages) {
+    if (pages[page].langs[lang]) {
+      let route = '/' + pages[page].langs[lang].replace('.html', '');
+
+      // Jeśli to index.html, ustaw jako root
+      if (pages[page].langs[lang] === 'index.html') {
+        route = '/';
+      }
+
+      routes.push(route);
+    }
+  }
+
+  return routes;
+};
 
 // i18n START
 
 const LANG = parts.EnvCheckerPlugin.findParam('lang');
 const GIT_INFO = parts.EnvCheckerPlugin.findParam('gitInfo');
 const EXTRACT_BODY = parts.EnvCheckerPlugin.findParam('extractBody');
+
+const rawData = FS.readFileSync('pages.json', 'utf8');
+let pages = JSON.parse(rawData);
 
 const EscStr = '&-p-&';
 let i18n = {};
@@ -89,7 +119,9 @@ const defaultMeta = {
 };
 
 // i18n START
-const _ = (str, params) => {
+const Lang = parts.EnvCheckerPlugin.findParam('lang');
+
+const _t = (str, params) => {
   if (str in i18n) {
     const result = i18n[str](params)
       .replace(new RegExp(EscStr, 'g'), '%')
@@ -105,13 +137,55 @@ const _ = (str, params) => {
 };
 
 const _l = (str, params, links) => {
-  str = _(str, params);
+  str = _t(str, params);
   let n = 0;
   return str.replace(/\[\[(.+?)\]\]/g, function (match, contents) {
     return `<a ${links[n++]}>${contents}</a>`;
   });
 };
+
+const _href = (page) => {
+  if (pages[page]) {
+    if ('index' === page) {
+      return './';
+    }
+    return './' + pages[page].langs[Lang];
+  } else {
+    console.error(
+      `${parts.chalk.bold.blue('Missing link for')} ${parts.chalk.bold.yellow(
+        page,
+      )}`,
+    );
+    return '#';
+  }
+};
+
 // i18n END
+
+// HTML pages START
+
+const multipleHtmlPlugins = [];
+
+for (const page in pages) {
+  const htmlWebPackPlugin = new HtmlWebPackPlugin({
+    filename: `${pages[page].langs[Lang]}`,
+    chunks: pages[page].chunks ?? [],
+    template: `./src/pages/${page}.pug`,
+    templateParameters: {
+      lang: Lang,
+      _t: _t,
+      _l: _l,
+      _href: _href,
+    },
+    inject: 'head',
+    meta: defaultMeta,
+    alwaysWriteToDisk: true,
+    scriptLoading: 'defer',
+  });
+
+  multipleHtmlPlugins.push(htmlWebPackPlugin);
+}
+// HTML pages END
 
 const commonConfig = merge([
   parts.loadHTML(),
@@ -126,10 +200,13 @@ const commonConfig = merge([
   {
     entry: {
       homePage: `${parts.path.resolve(__dirname)}/src/assets/ts/pages/index.ts`,
-      aboutPage: `${parts.path.resolve(__dirname)}/src/assets/ts/pages/about.js`,
+      privacyPolicyPage: `${parts.path.resolve(__dirname)}/src/assets/ts/pages/privacy-policy.ts`,
+
+      // aboutPage: `${parts.path.resolve(__dirname)}/src/assets/ts/pages/about.js`,
+      // blogPage: `${parts.path.resolve(__dirname)}/src/assets/ts/pages/blog.ts`,
     },
 
-    target: ['web', 'es2019'],
+    target: ['web', 'es2021'],
     resolve: {
       extensions: ['.ts', '.js'],
     },
@@ -138,40 +215,35 @@ const commonConfig = merge([
       new CaseSensitivePathsPlugin(),
 
       // Pages START
-      new HtmlWebPackPlugin({
-        filename: `index-${LANG}.html`,
-        chunks: ['homePage'],
-        template: './src/pages/index.ejs',
-        inject: 'head',
-        meta: defaultMeta,
-        alwaysWriteToDisk: true,
-        scriptLoading: 'defer',
-        templateParameters: {
-          lang: LANG,
-          _: _,
-          _l: _l,
-        },
-      }),
-      new HtmlWebPackPlugin({
-        filename: `about-${LANG}.html`,
-        chunks: ['aboutPage'],
-        template: './src/pages/about.ejs',
-        inject: 'head',
-        meta: defaultMeta,
-        alwaysWriteToDisk: true,
-        scriptLoading: 'defer',
-        // templateContent: ({ htmlWebpackPlugin }) =>
-        //   renderTemplate('./src/pages/about.ejs', {
-        //     lang: LANG,
-        //     _: _,
-        //     _l: _l,
-        //   }),
-        templateParameters: {
-          lang: LANG,
-          _: _,
-          _l: _l,
-        },
-      }),
+      // new HtmlWebPackPlugin({
+      //   filename: `index-${LANG}.html`,
+      //   chunks: ['homePage'],
+      //   template: './src/pages/index.pug',
+      //   inject: 'head',
+      //   meta: defaultMeta,
+      //   alwaysWriteToDisk: true,
+      //   scriptLoading: 'defer',
+      //   templateParameters: {
+      //     lang: LANG,
+      //     _t: _t,
+      //     _l: _l,
+      //   },
+      // }),
+
+      // new HtmlWebPackPlugin({
+      //   filename: `blog/index-${LANG}.html`,
+      //   chunks: ['blogPage'],
+      //   template: './src/pages/blog/index.ejs',
+      //   inject: 'head',
+      //   meta: defaultMeta,
+      //   alwaysWriteToDisk: true,
+      //   scriptLoading: 'defer',
+      //   templateParameters: {
+      //     lang: LANG,
+      //     _t: _t,
+      //     _l: _l,
+      //   },
+      // }),
       // Pages END
 
       new FaviconsWebpackPlugin({
@@ -180,20 +252,40 @@ const commonConfig = merge([
       }),
       new HtmlWebpackHarddiskPlugin(),
       new Dotenv(),
-    ],
+    ].concat(multipleHtmlPlugins),
   },
 ]);
 
+const loadOutput = (
+  filename = '[name].[contenthash].js',
+  outputDir = './public',
+) => ({
+  output: {
+    path:
+      Lang === 'pl'
+        ? path.resolve(__dirname, `${outputDir}`)
+        : path.resolve(__dirname, `${outputDir}/${Lang}`),
+    publicPath: '',
+    filename: filename,
+    assetModuleFilename: 'assets/images/[hash][ext][query]',
+  },
+});
+
 const productionConfig = merge([
   parts.loadOptimization(),
-  parts.generateSourceMaps({ type: 'nosources-source-map' }),
+  // parts.generateSourceMaps({ type: 'nosources-source-map' }),
+  parts.generateSourceMaps({ type: false }),
   parts.extractCSS(),
   parts.attachRevision(),
-  parts.loadOutput(),
+  // parts.loadOutput(),
+  loadOutput(),
   {
     plugins: [
       new BundleAnalyzerPlugin({
         analyzerMode: 'disabled',
+      }),
+      new CopyWebpackPlugin({
+        patterns: [{ from: 'llm.txt', to: '' }],
       }),
     ],
   },
@@ -263,13 +355,62 @@ const htmlFileContentConfig = merge([
   },
 ]);
 
+const sitemapConfig = merge([
+  {
+    plugins: [
+      new WebpackShellPluginNext({
+        onBuildEnd: {
+          scripts: [
+            async () => {
+              // const outputDir = Lang === 'pl' ? './public' : `./public/${Lang}`;
+              const outputDir = Lang === 'pl' ? './public' : `./public`;
+
+              await generateSitemap({
+                hostname: 'https://digitalsharks.pl', // Zmień na swoją domenę
+                dynamicRoutes: generateDynamicRoutes(Lang),
+                outDir: outputDir,
+                changefreq: {
+                  '/': 'monthly',
+                  '/blog': 'weekly',
+                  '*': 'monthly', // default dla reszty
+                },
+                priority: {
+                  '/': 1.0,
+                  '/blog': 0.9,
+                  '*': 0.8, // default dla reszty
+                },
+                generateRobotsTxt: true,
+                robots: [
+                  {
+                    userAgent: '*',
+                    allow: '/',
+                    disallow: ['/admin', '/private'],
+                  },
+                ],
+              });
+
+              console.log(
+                `✅ Sitemap generated for ${Lang}: ${outputDir}/sitemap.xml`,
+              );
+            },
+          ],
+          blocking: true,
+          parallel: false,
+        },
+      }),
+    ],
+  },
+]);
+
 const developmentConfig = merge([
   parts.loadOutput('[name].[fullhash].js'),
+  // loadOutput('[name].[fullhash].js', ''),
   parts.devServer({
     // Customize host/port here if needed
     host: process.env.HOST,
     port: process.env.PORT,
-    open: [`index-${LANG}.html`],
+    // open: [`index-${LANG}.html`],
+    open: [`/`],
   }),
   parts.generateSourceMaps({ type: 'eval-source-map' }),
   parts.loadCSS(),
@@ -283,11 +424,13 @@ export default (env, argv) => {
   if (mode === 'production') {
     const config = merge(commonConfig, productionConfig, { mode });
 
+    const configWithSitemap = merge(config, sitemapConfig, { mode });
+
     if (GIT_INFO !== null || EXTRACT_BODY !== null) {
-      return merge(config, htmlFileContentConfig, { mode });
+      return merge(configWithSitemap, htmlFileContentConfig, { mode });
     }
 
-    return config;
+    return configWithSitemap;
   } else {
     return merge(commonConfig, developmentConfig, { mode });
   }

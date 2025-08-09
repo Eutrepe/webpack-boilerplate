@@ -2,5 +2,30 @@
   --white: #fff;
   --black: #000;
   --blue: #006bdd;
-  --overlayColor: #35275eaa;
+
+  --focus-outline-color: var(--white);
+  --focus-outline-width: 2px;
+  --focus-outline-offset: 5px;
+  --focus-background-color: var(--buttonBlueHover);
+
+  --mobileNavBorderColor: rgba(255, 255, 255, 0.2);
+
+  --baseFrameBorderColor: #3f4147;
+  --borderFrameGradientColor: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.7) 40%,
+    rgba(255, 255, 255, 0.5) 70%,
+    transparent 100%
+  );
+
+  --borderFrameGradientColorHover: radial-gradient(
+    circle,
+    rgba(114, 164, 255, 0.9) 0%,
+    rgba(114, 164, 255, 0.7) 40%,
+    rgba(114, 164, 255, 0.5) 70%,
+    transparent 100%
+  );
+
+  --Poppins: 'Poppins', sans-serif;
 }

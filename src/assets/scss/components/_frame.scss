@@ -1,0 +1,78 @@
+@use '../mixins/medias';
+
+.ds-frame {
+  position: relative;
+  border-radius: 24px;
+  max-width: 510px;
+  padding: 1px;
+  position: relative;
+
+  &.with-hover {
+    cursor: pointer;
+
+    &:hover {
+      .ds-frame {
+        &__decoration {
+          &::before {
+            opacity: 0;
+          }
+          &::after {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+
+  &__content {
+    position: relative;
+    z-index: 10;
+    border-radius: 31px;
+    padding: 40px 28px;
+    color: var(--white);
+    background-color: var(--black);
+    backdrop-filter: blur(6px);
+  }
+
+  &__container {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    border-radius: 40px;
+  }
+
+  &__decoration {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    border-radius: 30px;
+    overflow: hidden;
+    background-color: var(--baseFrameBorderColor);
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: var(--dot-size, 120px);
+      height: var(--dot-size, 120px);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
+      filter: blur(var(--dot-blur, 10px));
+      transform: translate(var(--dot-x, 0), var(--dot-y, 0));
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    &::before {
+      background: var(--borderFrameGradientColor);
+      opacity: 1;
+    }
+
+    &::after {
+      background: var(--borderFrameGradientColorHover);
+      opacity: 0;
+    }
+  }
+}

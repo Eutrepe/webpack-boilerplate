@@ -1,0 +1,16 @@
+@use "sass:string";
+@use "breakpoints";
+
+// Mixin dla max-width od 300px do 1000px
+@mixin generate-max-width-helpers {
+  @for $i from 6 through 20 {
+    $width: $i * 50px;
+    $width-no-unit: string.slice(#{$width}, 1, -3); // Usuwa "px" z końca wartości
+    // Klasa domyślna (globalna)
+    .max-width-#{$width-no-unit} {
+      max-width: $width;
+    }
+    // Klasy z breakpointami
+    @include breakpoints.breakpoint-classes('max-width', $width-no-unit, max-width, $width);
+  }
+}

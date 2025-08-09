@@ -1,0 +1,29 @@
+// Definiujemy nasze breakpointy
+$breakpoints: (
+  "xs": 480px,
+  "sm": 576px,
+  "md": 768px,
+  "lg": 992px,
+  "xl": 1200px,
+  "xxl": 1366px,
+  "big": 1470px,
+  "ultra": 2560px
+);
+
+
+// Mixin do generowania klas dla breakpointów
+@mixin breakpoint-classes($class-name, $suffix, $property, $value: null) {
+    $value: if($value == null, $suffix, $value);
+  
+    @each $breakpoint, $breakpoint-width in $breakpoints {
+      .#{$class-name}-#{$breakpoint}-#{$suffix} {
+        @if $breakpoint-width == 0 {
+          #{$property}: $value !important;
+        } @else {
+          @media (min-width: #{$breakpoint-width}) {
+            #{$property}: $value !important;
+          }
+        }
+      }
+    }
+  }

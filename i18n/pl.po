@@ -16,3 +16,58 @@ msgstr ""
 msgid "test"
 msgstr "test PL"
 
+msgid "INDEX.page.title"
+msgstr "TITLE"
+
+msgid "INDEX.page.description"
+msgstr "OPIS"
+
+
+msgid "GLOBAL.langSwitcher.polish"
+msgstr "PL"
+
+msgid "GLOBAL.langSwitcher.english"
+msgstr "EN"
+
+
+
+msgid "MENU.services"
+msgstr "Usługi"
+
+msgid "MENU.case-studies"
+msgstr "Case Studies"
+
+msgid "MENU.about"
+msgstr "O Nas"
+
+msgid "MENU.blog"
+msgstr "Blog"
+
+msgid "MENU.contact"
+msgstr "Kontakt"
+
+
+
+msgid "NAV.aria.mainNav"
+msgstr "Główna nawigacja"
+
+msgid "NAV.skipToMain"
+msgstr "Przejdź do głównej treści"
+
+msgid "NAV.logo.ariaLabel"
+msgstr "NAZWA_FIRMY – strona główna"
+
+msgid "NAV.menuToggle.open"
+msgstr "Otwórz menu nawigacji"
+
+msgid "NAV.menuToggle.close"
+msgstr "Zamknij menu nawigacji"
+
+
+
+
+msgid "MOBILE_NAV.logo.ariaLabel"
+msgstr "NAZWA_FIRMY – strona główna"
+
+msgid "MOBILE_NAV.close.ariaLabel"
+msgstr "Zamknij menu nawigacji"

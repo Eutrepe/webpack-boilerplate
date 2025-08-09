@@ -1,0 +1,16 @@
+{
+  "index": {
+    "langs": {
+      "pl": "index.html",
+      "en": "index.html"
+    },
+    "chunks": ["homePage"]
+  },
+  "privacy-policy": {
+    "langs": {
+      "pl": "polityka-prywatnosci.html",
+      "en": "privacy-policy.html"
+    },
+    "chunks": ["privacyPolicyPage"]
+  }
+}
